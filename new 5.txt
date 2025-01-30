@@ -1,0 +1,65 @@
+<template>
+    <lightning-card title="Personal Information">
+    <div class="container">
+        <div class="row">
+            <div class="field">
+                <legend class="slds-form-element__legend slds-form-element__label">First Name</legend>
+                <lightning-input variant="label-hidden" label="First Name" type="text" value={firstName} onchange={handleFirstNameChange} class="small-input"></lightning-input>
+            </div>
+            <div class="field">
+                <lightning-input label="Last Name" type="text" value={lastName} onchange={handleLastNameChange} class="small-input"></lightning-input>
+            </div>
+			<div class="field">
+                <lightning-input label="Middle Name" type="text" value={middleName} onchange={handleMiddleNameChange} class="small-input"></lightning-input>
+            </div>
+        </div>
+		
+        <div class="row"> 
+		   <div class="field">
+                <lightning-input label="Date of Birth" type="date" value={birthdate} onchange={handleBirthdateChange} class="medium-input"></lightning-input>
+            </div>
+            <div class="field">
+                <lightning-input label="SSN" value={ssn} onchange={handleSSNChange} class="medium-input"></lightning-input>
+            </div>
+			<div class="field">
+                <lightning-input label="Plan ID" type="text" value={planId} onchange={handlePlanIdChange} class="medium-input"></lightning-input>
+            </div>
+        </div>
+		
+		 <div class="row"> 
+		 <div class="field">
+                <lightning-input label="Email" type="email" value={email} onchange={handleEmailChange} class="large-input"></lightning-input>
+            </div>
+		   <div class="field">
+                <lightning-input label="Phone" type="tel" value={phone} onchange={handlePhoneChange} class="small-input"></lightning-input>
+            </div>
+         </div>
+		
+		
+		 <div class="row"> 
+		 <div class="field">
+                <lightning-input label="Street" value={mailingStreet} onchange={handleMailingStreetChange} class="large-input"></lightning-input>
+         </div>
+		 <div class="field">
+               <lightning-input label="City" value={mailingCity} onchange={handleMailingCityChange} class="small-input"></lightning-input>
+         </div>
+		 <div class="field">
+                <lightning-input label="State" value={mailingState} onchange={handleMailingStateChange} class="small-input"></lightning-input>
+         </div>
+		 <div class="field">
+                <lightning-input label="Zip" value={mailingPostalCode} onchange={handleMailingPostalCodeChange} class="small-input"></lightning-input>
+         </div>
+		 <div class="field">
+               <lightning-input label="Country" value={mailingCountry} onchange={handleMailingCountryChange} class="small-input"></lightning-input>
+         </div>	 
+		   
+         </div> 
+		 
+        <div class="row">
+            <div class="field">
+                <lightning-button variant="brand" label="Save" onclick={handleSave}></lightning-button>
+            </div>
+        </div>
+    </div>
+    </lightning-card>  
+</template>

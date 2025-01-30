@@ -1,0 +1,91 @@
+<!-- contactForm.html -->
+<template>
+    <lightning-card title="Personal Information">
+        <div class="slds-m-around_medium">
+            <lightning-input label="First Name" value={firstName} onchange={handleFirstNameChange}></lightning-input>
+            <lightning-input label="Last Name" value={lastName} onchange={handleLastNameChange}></lightning-input>
+            <lightning-input label="Middle Name" value={middleName} onchange={handleMiddleNameChange}></lightning-input>
+			
+            <lightning-input type="date" label="Birthdate" value={birthdate} onchange={handleBirthdateChange}></lightning-input>
+            <lightning-input label="SSN" value={ssn} onchange={handleSSNChange}></lightning-input>			
+            <lightning-input label="Plan ID" value={planId} onchange={handlePlanIdChange}></lightning-input>
+			
+            <lightning-input type="email" label="Email" value={email} onchange={handleEmailChange}></lightning-input>
+            <lightning-input type="tel" label="Phone" value={phone} onchange={handlePhoneChange}></lightning-input>
+			
+            <lightning-input label="Mailing Street" value={mailingStreet} onchange={handleMailingStreetChange}></lightning-input>
+            <lightning-input label="Mailing City" value={mailingCity} onchange={handleMailingCityChange}></lightning-input>
+            <lightning-input label="Mailing State" value={mailingState} onchange={handleMailingStateChange}></lightning-input>
+            <lightning-input label="Mailing Postal Code" value={mailingPostalCode} onchange={handleMailingPostalCodeChange}></lightning-input>
+            <lightning-input label="Mailing Country" value={mailingCountry} onchange={handleMailingCountryChange}></lightning-input>
+			
+        </div>
+        <div class="slds-m-around_medium">
+            <lightning-button variant="brand" label="Save" onclick={handleSave}></lightning-button>
+        </div>
+    </lightning-card>  
+</template>
+
+
+<template>
+    <div class="container">
+        <div class="row">
+            <div class="field">
+                <lightning-input label="First Name" type="text" value={firstName} onchange={handleFirstNameChange} class="small-input"></lightning-input>
+            </div>
+            <div class="field">
+                <lightning-input label="Last Name" type="text" value={lastName} onchange={handleLastNameChange} class="small-input"></lightning-input>
+            </div>
+			<div class="field">
+                <lightning-input label="Middle Name" type="text" value={middleName} onchange={handleMiddleNameChange} class="small-input"></lightning-input>
+            </div>
+        </div>
+		
+        <div class="row"> 
+		   <div class="field">
+                <lightning-input label="Date of Birth" type="date" value={birthdate} onchange={handleBirthdateChange} class="medium-input"></lightning-input>
+            </div>
+            <div class="field">
+                <lightning-input label="SSN" type="text" value={ssn} onchange={handleSsnChange} class="medium-input"></lightning-input>
+            </div>
+			<div class="field">
+                <lightning-input label="Plan ID" type="text" value={planId} onchange={handlePlanIdChange} class="medium-input"></lightning-input>
+            </div>
+        </div>
+		
+		 <div class="row"> 
+		 <div class="field">
+                <lightning-input label="Email" type="email" value={email} onchange={handleEmailChange} class="small-input"></lightning-input>
+            </div>
+		   <div class="field">
+                <lightning-input label="Phone" type="tel" value={phone} onchange={handlePhoneChange} class="small-input"></lightning-input>
+            </div>
+         </div>
+		
+		
+		 <div class="row"> 
+		 <div class="field">
+                <lightning-input label="Mailing Street" value={mailingStreet} onchange={handleMailingStreetChange} class="small-input"></lightning-input>
+         </div>
+		 <div class="field">
+               <lightning-input label="Mailing City" value={mailingCity} onchange={handleMailingCityChange} class="small-input"></lightning-input>
+         </div>
+		 <div class="field">
+                <lightning-input label="Mailing State" value={mailingState} onchange={handleMailingStateChange} class="small-input"></lightning-input>
+         </div>
+		 <div class="field">
+                <lightning-input label="Mailing Postal Code" value={mailingPostalCode} onchange={handleMailingPostalCodeChange} class="small-input"></lightning-input>
+         </div>
+		 <div class="field">
+               <lightning-input label="Mailing Country" value={mailingCountry} onchange={handleMailingCountryChange} class="small-input"></lightning-input>
+         </div>	 
+		   
+         </div> 
+		 
+        <div class="row">
+            <div class="field">
+                <lightning-button variant="brand" label="Save" onclick={handleSave}></lightning-button>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,142 @@
+<template>
+    <lightning-card title="Personal information" icon-name="standard:contact">
+        <div class="slds-var-p-around_x-small">
+            <lightning-input value={recContact.First} label="First Name" onchange={handelFirstchange}></lightning-input>
+            <lightning-input value={recContact.Middle} label="Middle Name" onchange={handelMiddlechange}></lightning-input>
+            <lightning-input value={recContact.Last} label="Last Name" onchange={handelLastchange}></lightning-input>
+            <lightning-input value={recContact.Birth} label="Birth Date" onchange={handelBirthchange}></lightning-input>
+            <!--<lightning-input value={recContact.SSN__c} label="SSN/ITIN" onchange={handelSsnchange}></lightning-input>
+            <lightning-input value={recContact.Plan_Type__c} label="Plan Type" onchange={handelPlanchange}></lightning-input>-->
+            <br/>
+            <lightning-button label="Save contact Rec" onclick={createConRec} variant="brand"></lightning-button>
+        </div>
+    </lightning-card>
+</template>
+
+js
+
+import { LightningElement, track } from 'lwc';
+import FIRST_FIELD from '@salesforce/schema/Contact.FirstName';
+import MIDDLE_FIELD from '@salesforce/schema/Contact.MiddleName';
+import LAST_FIELD from '@salesforce/schema/Contact.LastName';
+import Birth_FIELD from '@salesforce/schema/Contact.Birthdate';
+//import SSN_FIELD from '@salesforce/schema/Contact.SSN__c';
+//import PLAN_FIELD from '@salesforce/schema/Contact.Plan_Type__c';
+import contactRecMethod from '@salesforce/apex/ContactRecHelper.contactRecMethod';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+export default class ContactRecCreation extends LightningElement {
+
+    @track First = FIRST_FIELD;
+    @track Middle = MIDDLE_FIELD;
+    @track Last = LAST_FIELD;
+    @track Birth = Birth_FIELD;
+   // @track Ssn = SSN_FIELD;
+    //@track Plan = PLAN_FIELD;
+
+    recContact = {
+
+        First : this.First,
+        Middle : this.Middle,
+        Last : this.Last,
+        Birth: this.Birth,
+       // Ssn: this.Ssn,
+       // Plan: this.Plan
+    }
+
+    handelFirstchange(event){
+        this.recContact.First = event.target.value;
+        //console.log("First",this.recContact.First);
+    }
+    handelMiddlechange(event){
+        this.recContact.Middle = event.target.value;
+        //console.log("Middle",this.recContact.Middle);
+    }
+    handelLastchange(event){
+        this.recContact.Last = event.target.value;
+        //console.log("Last",this.recContact.Last);
+    }
+    handelBirthchange(event){
+        this.recContact.Birth = event.target.value;
+       // console.log("Birth",this.recContact.Birth);
+    }
+
+    /*handelSsnchange(event){
+        this.recContact.Ssn = event.target.value;
+       // console.log("Ssn",this.recContact.Ssn);
+    }
+
+    handelPlanchange(event){
+        this.recContact.Plan = event.target.value;
+        //console.log("Plan",this.recContact.Plan);
+    }*/
+
+    createConRec() {
+        debugger;
+        contactRecMethod({ conRec : this.recContact })
+            .then(result => {
+                this.message = result;
+                this.error = undefined;
+                if(this.message !== undefined) {
+                    this.recContact.First = '';
+                    this.recContact.Middle = '';
+                    this.recContact.Last = '';
+                    this.recContact.Birth = '';
+                    //this.recContact.Ssn = '';
+                    //this.recContact.Plan= '';
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'Contact created',
+                            variant: 'success',
+                        }),
+                    );
+                }
+                
+                console.log(JSON.stringify(result));
+                console.log("result", this.message);
+            })
+            .catch(error => {
+                this.message = undefined;
+                this.error = error;
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error creating record',
+                        message: error.body.message,
+                        variant: 'error',
+                    }),
+                );
+                console.log("error", JSON.stringify(this.error));
+            });
+    }
+}
+
+
+
+ .then(contact => {
+                this.message = contact;
+                this.error = undefined;
+                if(this.message !== undefined) {                    
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'Contact created',
+                            variant: 'success',
+                        }),
+                    );
+                }
+                
+                console.log(JSON.stringify(contact));
+                console.log("contact", this.message);
+            })
+			
+			 .then(contact => {
+                console.log('Contact created: ', contact.id);
+                // You can add further actions here, like showing a success message or navigating to the newly created contact record
+            })
+			
+			
+			
+			.catch(error => {
+                console.error('Error creating contact: ', error.body.message);
+                // You can handle errors here, like displaying an error message to the user
+            });

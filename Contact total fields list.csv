@@ -1,0 +1,153 @@
+QualifiedApiName,DeveloperName,Description,DataType,Length
+Id,Id,,Lookup(),18
+IsDeleted,IsDeleted,,Checkbox,0
+MasterRecordId,MasterRecord,,Lookup(Contact),18
+AccountId,Account,,Lookup(Company),18
+IsPersonAccount,IsPersonAccount,,Checkbox,0
+Name,Name,,Name,121
+RecordTypeId,RecordType,,Record Type,18
+OtherAddress,OtherAddress,,Address,0
+MailingAddress,MailingAddress,,Address,0
+Phone,Phone,,Phone,40
+Fax,Fax,,Fax,40
+MobilePhone,MobilePhone,,Phone,40
+HomePhone,HomePhone,,Phone,40
+OtherPhone,OtherPhone,,Phone,40
+AssistantPhone,AssistantPhone,,Phone,40
+ReportsToId,ReportsTo,,Lookup(Contact),18
+Email,Email,,Email,80
+Title,Title,,Text(128),128
+Department,Department,,Text(80),80
+AssistantName,AssistantName,,Text(40),40
+LeadSource,LeadSource,,Picklist,255
+Birthdate,Birthdate,Contact Date Of Birth,Date,0
+Description,Description,,Long Text Area(32000),32000
+OwnerId,Owner,,Lookup(User),18
+HasOptedOutOfEmail,HasOptedOutOfEmail,,Checkbox,0
+HasOptedOutOfFax,HasOptedOutOfFax,,Checkbox,0
+DoNotCall,DoNotCall,,Checkbox,0
+CreatedDate,CreatedDate,,Date/Time,0
+CreatedById,CreatedBy,,Lookup(User),18
+LastModifiedDate,LastModifiedDate,,Date/Time,0
+LastModifiedById,LastModifiedBy,,Lookup(User),18
+SystemModstamp,SystemModstamp,,Date/Time,0
+LastActivityDate,LastActivityDate,,Date,0
+LastCURequestDate,LastCURequestDate,,Date/Time,0
+LastCUUpdateDate,LastCUUpdateDate,,Date/Time,0
+LastViewedDate,LastViewedDate,,Date/Time,0
+LastReferencedDate,LastReferencedDate,,Date/Time,0
+UserRecordAccessId,UserRecordAccess,,Lookup(User Record Access),18
+EmailBouncedReason,EmailBouncedReason,,Text(255),255
+EmailBouncedDate,EmailBouncedDate,,Date/Time,0
+IsEmailBounced,IsEmailBounced,,Checkbox,0
+PhotoUrl,PhotoUrl,,URL(255),255
+Jigsaw,Jigsaw,,Text(20),20
+JigsawContactId,JigsawContact,,External Lookup,20
+IndividualId,Individual,,Lookup(Individual),18
+FinServ__AgeAsText__c,AgeAsText,,Formula (Text),1300
+FinServ__Age__c,Age,,Formula (Number),0
+FinServ__AnnualIncome__c,AnnualIncome,,"Currency(18, 0)",0
+FinServ__BillingAddress__c,BillingAddress,Compound field for Billing Address.,Formula (Text),1300
+FinServ__Citizenship__c,Citizenship,,Text(50),50
+FinServ__CountryOfResidence__c,CountryOfResidence,Country of residence.,Text(50),50
+FinServ__CreatedFromLead__c,CreatedFromLead,,Checkbox,0
+FinServ__CurrentEmployer__c,CurrentEmployer,,Text(255),255
+FinServ__EmployedSince__c,EmployedSince,Year when client started with current employer.,Date,0
+FinServ__Facebook__c,Facebook,,URL(255),255
+FinServ__Gender__c,Gender,,Picklist,255
+FinServ__IndividualId__c,IndividualId,Unique ID that relates this individual's contact record to its account record.,Formula (Text),1300
+FinServ__IndividualType__c,IndividualType,Individual Type,Picklist,255
+FinServ__LanguagesSpoken__c,LanguagesSpoken,,Text(80),80
+FinServ__LinkedIn__c,LinkedIn,,URL(255),255
+FinServ__MailingAddress__c,MailingAddress,Compound field for Mailing Address.,Formula (Text),1300
+FinServ__MaritalStatus__c,MaritalStatus,,Picklist,255
+FinServ__NumberOfDependents__c,NumberOfDependents,Number of dependents.,"Number(3, 0)",0
+FinServ__Occupation__c,Occupation,,Text(80),80
+FinServ__OtherAddress__c,OtherAddress,Compound field for Other Address.,Formula (Text),1300
+FinServ__PrimaryAddressIsBilling__c,PrimaryAddressIsBilling,Designates Billing Address as the primary address.,Checkbox,0
+FinServ__PrimaryAddressIsMailing__c,PrimaryAddressIsMailing,Designates Mailing Address as the primary address.,Checkbox,0
+FinServ__PrimaryAddressIsOther__c,PrimaryAddressIsOther,Designates Other Address as the primary address.,Checkbox,0
+FinServ__PrimaryAddressIsShipping__c,PrimaryAddressIsShipping,Designates Shipping Address as the primary address.,Checkbox,0
+FinServ__ShippingAddress__c,ShippingAddress,Concatenated shipping address field.,Formula (Text),1300
+FinServ__SourceSystemId__c,SourceSystemId,,Text(100)  (External ID),100
+FinServ__TaxBracket__c,TaxBracket,,Picklist,255
+FinServ__TaxId__c,TaxId,,Text(25),25
+FinServ__Twitter__c,Twitter,,URL(255),255
+FinServ__WeddingAnniversary__c,WeddingAnniversary,Date of wedding anniversary.,Date,0
+FinServ__CountryOfBirth__c,CountryOfBirth,,Picklist,255
+FinServ__PreferredName__c,PreferredName,,Text(80),80
+FinServ__PrimaryLanguage__c,PrimaryLanguage,,Picklist,255
+FinServ__SecondaryLanguage__c,SecondaryLanguage,,Picklist,255
+FinServ__Affiliations__c,Affiliations,,Text Area(255),255
+FinServ__CommunicationPreferences__c,CommunicationPreferences,,Picklist (Multi-Select),4099
+FinServ__ContactPreference__c,ContactPreference,,Picklist,255
+FinServ__CustomerTimezone__c,CustomerTimezone,,Picklist,255
+FinServ__EmailVerified__c,EmailVerified,,Checkbox,0
+FinServ__FaxVerified__c,FaxVerified,,Checkbox,0
+FinServ__HomeOwnership__c,HomeOwnership,,Picklist,255
+FinServ__HomePhoneVerified__c,HomePhoneVerified,,Checkbox,0
+FinServ__LastFourDigitSSN__c,LastFourDigitSSN,Last 4-Digits of SSN or Tax ID,Text(4),4
+FinServ__MarketingOptOut__c,MarketingOptOut,,Checkbox,0
+FinServ__NumberOfChildren__c,NumberOfChildren,,"Number(3, 0)",0
+FinServ__PrimaryCitizenship__c,PrimaryCitizenship,,Picklist,255
+FinServ__ReferredByContact__c,ReferredByContact,,Lookup(Contact),18
+FinServ__ReferredByUser__c,ReferredByUser,,Lookup(User),18
+FinServ__ReferrerScore__c,ReferrerScore,Referrer Score,"Number(16, 2)",0
+FinServ__SecondaryCitizenship__c,SecondaryCitizenship,,Picklist,255
+AUM__c,AUM,,Picklist,255
+Accounts_Transfer_with_Advisor__c,Accounts_Transfer_with_Advisor,,Text(250),250
+Advisor_CRD__c,Advisor_CRD,,Text(7),7
+Advisor_Change_Date__c,Advisor_Change_Date,,Date,0
+Advisor_ID__c,Advisor_ID,,Text(100),100
+Advisor_Number__c,Advisor_Number,,Text(7),7
+Advisor_Type_Other__c,Advisor_Type_Other,,Text(250),250
+Advisor_Type__c,Advisor_Type,,Picklist,255
+Annual_Contribution__c,Annual_Contribution,,"Currency(18, 0)",0
+Branch_ID__c,Branch_ID,,Text Area(255),255
+Branch_Name__c,Branch_Name,,Lookup(Company),18
+Broker_Dealer_RIA__c,Broker_Dealer_RIA,,Lookup(Company),18
+Children_s_Ages__c,Children_s_Ages,,Text(255),255
+Comments__c,Comments,,Text(250),250
+Contact_Type__c,Contact_Type,,Picklist,255
+Contact__c,Contact,,Lookup(Contact),18
+Customer_Access_Level__c,Customer_Access_Level,,Picklist,255
+Customers_UA__c,Customers_UA,,Picklist,255
+Employer_Sponsored_another_Plan__c,Employer_Sponsored_another_Plan,,Picklist,255
+Gender__c,Gender,,Picklist,255
+Hobbies__c,Hobbies,,Picklist (Multi-Select),4099
+If_yes_please_provide_short_description__c,If_yes_please_provide_short_description,,Text(255),255
+Internal_Advisor_Verification_Code__c,Internal_Advisor_Verification_Code,,Text(100),100
+Internal__c,Internal,,Checkbox,0
+Marital_Status__c,Marital_Status,,Picklist,255
+Mood__c,Mood,,Picklist,255
+New_Plan__c,New_Plan,,Checkbox,0
+Number_of_Children__c,Number_of_Children,,Picklist,255
+Number_of_Employees__c,Number_of_Employees,,Text(11),11
+Number_of_Participants__c,Number_of_Participants,,Text(11),11
+Number_of_Plans__c,Number_of_Plans,,Text(10),10
+Organization_Type_Other__c,Organization_Type_Other,,Text(255),255
+Organization_Type__c,Organization_Type,,Picklist,255
+PSA_Date__c,PSA_Date,,Date,0
+Payroll_Frequency_Other__c,Payroll_Frequency_Other,,Text(255),255
+Payroll_Frequency__c,Payroll_Frequency,,Picklist,255
+Payroll_Service_Name__c,Payroll_Service_Name,,Text(255),255
+Plan_Assets__c,Plan_Assets,,"Currency(18, 0)",0
+Plan_Type__c,Plan_Type,,Picklist,255
+Previous_Firm_Comments__c,Previous_Firm_Comments,,Long Text Area(32768),32768
+Prior_Broker_Dealer_RIA__c,Prior_Broker_Dealer_RIA,,Lookup(Company),18
+Prior_SEP_Plan__c,Prior_SEP_Plan,,Checkbox,0
+Prior_Simple_Plan__c,Prior_Simple_Plan,,Checkbox,0
+Priority_Code__c,Priority_Code,,Picklist,255
+Profile_Notes__c,Profile_Notes,,Long Text Area(32768),32768
+Relius_Contact_ID__c,Relius_Contact_ID,,Text Area(255),255
+Role_Other__c,Role_Other,,Text(255),255
+Role__c,Role,,Picklist,255
+SSN__c,SSN,,Text (Encrypted)(11),11
+Takeover_Plan__c,Takeover_Plan,,Checkbox,0
+Team_Email__c,Team_Email,,Email,80
+Team_Name__c,Team_Name,,Text(255),255
+Team_Number__c,Team_Number,,Phone,40
+Was_the_Plan_terminated__c,Was_the_Plan_terminated,,Picklist,255
+Priority_Graphic__c,Priority_Graphic,,Formula (Text),1300
+Date_Of_Death__c,Date_Of_Death,Contact Date Of Death,Date,0
+Participant_Plan__c,Participant_Plan,,Lookup(Plan Participant),18

@@ -1,0 +1,852 @@
+Id,
+IsDeleted,
+MasterRecordId,
+Name,
+Type,
+RecordTypeId,
+ParentId,
+BillingStreet,
+    BillingCity,
+    BillingState,
+    BillingPostalCode,
+    BillingCountry,
+    ShippingStreet,
+    ShippingCity,
+    ShippingState,
+    ShippingPostalCode,
+    ShippingCountry,
+Fax,
+AccountNumber,
+Website,
+PhotoUrl,
+Sic,
+Industry,
+AnnualRevenue,
+NumberOfEmployees,
+Ownership,
+TickerSymbol,
+Description,
+Rating,
+Site,
+OwnerId,
+CreatedDate,
+CreatedById,
+LastModifiedDate,
+LastModifiedById,
+SystemModstamp,
+LastActivityDate,
+LastViewedDate,
+LastReferencedDate,
+UserRecordAccessId,
+PersonContactId,
+IsPersonAccount,
+PersonOtherAddress,PersonMailingAddress,
+
+PersonMobilePhone,
+PersonHomePhone,
+PersonOtherPhone,
+PersonAssistantPhone,
+PersonEmail,
+PersonTitle,
+PersonDepartment,
+PersonAssistantName,
+PersonLeadSource,
+PersonBirthdate,
+PersonHasOptedOutOfEmail,
+PersonHasOptedOutOfFax,
+PersonDoNotCall,
+PersonLastCURequestDate,
+PersonLastCUUpdateDate,
+PersonEmailBouncedReason,
+PersonEmailBouncedDate,
+PersonIndividualId,
+Jigsaw,
+JigsawCompanyId,
+AccountSource,
+SicDesc,
+FinServ__AUM__c,
+FinServ__ClientCategory__c,
+FinServ__FinancialInterests__c,
+FinServ__IndividualId__c,
+FinServ__IndividualType__c,
+FinServ__InvestmentExperience__c,
+FinServ__InvestmentObjectives__c,
+FinServ__LastInteraction__c,
+FinServ__LastReview__c,
+FinServ__MarketingSegment__c,
+FinServ__NetWorth__c,
+FinServ__NextInteraction__c,
+FinServ__NextReview__c,
+FinServ__Notes__c,
+FinServ__PersonalInterests__c,
+FinServ__PrimaryContact__c,
+FinServ__ReviewFrequency__c,
+FinServ__RiskTolerance__c,
+FinServ__ServiceModel__c,
+FinServ__SourceSystemId__c,
+FinServ__Status__c,
+FinServ__TimeHorizon__c,
+FinServ__TotalAUMJointOwner__c,
+FinServ__TotalAUMPrimaryOwner__c,
+FinServ__TotalBankDepositsJointOwner__c,
+FinServ__TotalBankDepositsPrimaryOwner__c,
+FinServ__TotalBankDeposits__c,
+FinServ__TotalFinAcctsJointOwner__c,
+FinServ__TotalFinAcctsPrimaryOwner__c,
+FinServ__TotalFinancialAccounts__c,
+FinServ__TotalHeldFinAcctsJointOwner__c,
+FinServ__TotalHeldFinAcctsPrimaryOwner__c,
+FinServ__TotalInsuranceJointOwner__c,
+FinServ__TotalInsurancePrimaryOwner__c,
+FinServ__TotalInsurance__c,
+FinServ__TotalInvestmentsJointOwner__c,
+FinServ__TotalInvestmentsPrimaryOwner__c,
+FinServ__TotalInvestments__c,
+FinServ__TotalLiabilitiesJointOwner__c,
+FinServ__TotalLiabilitiesPrimaryOwner__c,
+FinServ__TotalLiabilities__c,
+FinServ__TotalNonfinancialAssetsJointOwner__c,
+FinServ__TotalNonfinancialAssetsPrimaryOwner__c,
+FinServ__TotalNonfinancialAssets__c,
+FinServ__WalletShare__c,
+FinServ__BankNumber__c,
+FinServ__BorrowingHistory__c,
+FinServ__BorrowingPriorities__c,
+FinServ__BranchCode__c,
+FinServ__BranchName__c,
+FinServ__ConversionDateTime__c,
+FinServ__CreditRating__c,
+FinServ__CreditScore__c,
+FinServ__CustomerID__c,
+FinServ__CustomerSegment__c,
+FinServ__CustomerType__c,
+FinServ__KYCDate__c,
+FinServ__KYCStatus__c,
+FinServ__LastTransactionDateJointOwner__c,
+FinServ__LastTransactionDatePrimaryOwner__c,
+FinServ__LastTransactionDate__c,
+FinServ__LastUsedChannel__c,
+FinServ__LengthOfRelationship__c,
+FinServ__LifetimeValue__c,
+FinServ__ReferredByContact__c,
+FinServ__ReferredByUser__c,
+FinServ__RelationshipStartDate__c,
+FinServ__TotalNumberOfFinAccountsJointOwner__c,
+FinServ__TotalNumberOfFinAccountsPrimaryOwner__c,
+FinServ__TotalNumberOfFinAccounts__c,
+FinServ__TotalOutstandingCreditJointOwner__c,
+FinServ__TotalOutstandingCreditPrimaryOwner__c,
+FinServ__TotalOutstandingCredit__c,
+FinServ__TotalRevenue__c,
+FinServ__TotalPremium__c,
+Accept_Negative_Contributions__c,
+Annual_Contributions__c,
+Authorization_Processing__c,
+B_D_NCC__c,
+Billing_Frequency__c,
+Broker_Dealer_RIA_Notes__c,
+Business_Status_Notes__c,
+Business_Type__c,
+Captive_Advisors__c,
+Comments__c,
+Controlled_Group_Notes__c,
+Controlled_Group__c,
+Custom_ISA_DSA__c,
+Daily_Contact_PSA_Date__c,
+Daily_Contact_PSA_Level__c,
+Date_Issue_Changed__c,
+Date_IssuedChanged__c,
+De_Minimis_Loans__c,
+Division_Codes__c,
+Employer_ID__c,
+Employer_Monitors_Limits__c,
+Employer_Sponsored_another_Plan__c,
+Fee_Notes__c,
+Firm_CRD__c,
+Fiscal_Year_End__c,
+Funds_Transfer_Method__c,
+If_No_Notes__c,
+If_no_How__c,
+If_yes_please_provide_short_description__c,
+Internal_Payroll_Contact_Name__c,
+Negative_Contribution_Notes__c,
+New_Plan__c,
+Notes__c,
+Organization_Type_Other__c,
+Organization_Type__c,
+Other_Fees__c,
+PSAAuthorization_Level__c,
+PSA_Authorization_Level__c,
+Pay_Dates_Other_del__c,
+Pay_Dates_del__c,
+Pay_Frequency_Other_del__c,
+Pay_Frequency_del__c,
+Pay_TPA_Fees__c,
+Payment_Notes__c,
+Payroll_Contact_PSA_Date__c,
+Payroll_Contact_PSA_Level__c,
+Payroll_DER_del__c,
+Payroll_Format_del__c,
+Payroll_Processing_Notes__c,
+Payroll_Provider__c,
+Payroll_Upload_Process__c,
+PenServ_Assigned_Verification__c,
+Plan_Type_Other__c,
+Plan_Type__c,
+Prior_SEP_Plan__c,
+Prior_Simple_Plan__c,
+Refund_Processing_Notes__c,
+Refund_Request_Process_Notes__c,
+Remit_and_Pay_Together__c,
+Remittance_Instructions__c,
+Remittance_Method_Other__c,
+Remittance_Method__c,
+Reporting_Notes__c,
+Salary_Deferral_Changes__c,
+Services_Provided__c,
+Spark_Accepted_If_no_Notes__c,
+Spark_Accepted__c,
+Spark_Contribution_File__c,
+Spark_Contributions_If_No_Notes__c,
+Spark_Contributions_If_Yes_What_Version__c,
+Spark_Contributions__c,
+Spark_Day_of_Week__c,
+Spark_Day_of_the_week_If_No_Notes__c,
+Spark_Frequency__c,
+Spark_Processing_Notes__c,
+Spark_Sharing__c,
+Submission_Frequency__c,
+TPA_Approval_Notes__c,
+TPA_Code__c,
+TPA_Fee_per_Participant__c,
+TPA_Fees_Notes__c,
+TPA_ID__c,
+TPA_Notes__c,
+Takeover_Plan__c,
+Tax_IDEIN__c,
+Test_Date__c,
+Total_Number_of_Employees__c,
+Total_Number_of_Participants__c,
+Total_Number_of_Plans__c,
+Total_Plan_Assets__c,
+Universal_Availability_Notice__c,
+Was_the_Plan_terminated__c,
+FinServ__AgeAsText__pc,
+FinServ__Age__pc,
+FinServ__AnnualIncome__pc,
+FinServ__BillingAddress__pc,
+FinServ__Citizenship__pc,
+FinServ__CountryOfResidence__pc,
+FinServ__CreatedFromLead__pc,
+FinServ__CurrentEmployer__pc,
+FinServ__EmployedSince__pc,
+FinServ__Facebook__pc,
+FinServ__Gender__pc,
+FinServ__IndividualId__pc,
+FinServ__IndividualType__pc,
+FinServ__LanguagesSpoken__pc,
+FinServ__LinkedIn__pc,
+FinServ__MailingAddress__pc,
+FinServ__MaritalStatus__pc,
+FinServ__NumberOfDependents__pc,
+FinServ__Occupation__pc,
+FinServ__OtherAddress__pc,
+FinServ__PrimaryAddressIsBilling__pc,
+FinServ__PrimaryAddressIsMailing__pc,
+FinServ__PrimaryAddressIsOther__pc,
+FinServ__PrimaryAddressIsShipping__pc,
+FinServ__ShippingAddress__pc,
+FinServ__SourceSystemId__pc,
+FinServ__TaxBracket__pc,
+FinServ__TaxId__pc,
+FinServ__Twitter__pc,
+FinServ__WeddingAnniversary__pc,
+FinServ__CountryOfBirth__pc,
+FinServ__PreferredName__pc,
+FinServ__PrimaryLanguage__pc,
+FinServ__SecondaryLanguage__pc,
+FinServ__Affiliations__pc,
+FinServ__CommunicationPreferences__pc,
+FinServ__ContactPreference__pc,
+FinServ__CustomerTimezone__pc,
+FinServ__EmailVerified__pc,
+FinServ__FaxVerified__pc,
+FinServ__HomeOwnership__pc,
+FinServ__HomePhoneVerified__pc,
+FinServ__LastFourDigitSSN__pc,
+FinServ__MarketingOptOut__pc,
+FinServ__NumberOfChildren__pc,
+FinServ__PrimaryCitizenship__pc,
+FinServ__ReferredByContact__pc,
+FinServ__ReferredByUser__pc,
+FinServ__ReferrerScore__pc,
+FinServ__SecondaryCitizenship__pc,
+AUM__pc,
+Accounts_Transfer_with_Advisor__pc,
+Advisor_CRD__pc,
+Advisor_Change_Date__pc,
+Advisor_ID__pc,
+Advisor_Number__pc,
+Advisor_Type_Other__pc,
+Advisor_Type__pc,
+Annual_Contribution__pc,
+Branch_ID__pc,
+Branch_Name__pc,
+Broker_Dealer_RIA__pc,
+Children_s_Ages__pc,
+Comments__pc,
+Contact_Type__pc,
+Contact__pc,
+Customer_Access_Level__pc,
+Customers_UA__pc,
+Employer_Sponsored_another_Plan__pc,
+Gender__pc,
+Hobbies__pc,
+If_yes_please_provide_short_description__pc,
+Internal_Advisor_Verification_Code__pc,
+Internal__pc,
+Marital_Status__pc,
+Mood__pc,
+New_Plan__pc,
+Number_of_Children__pc,
+Number_of_Employees__pc,
+Number_of_Participants__pc,
+Number_of_Plans__pc,
+Organization_Type_Other__pc,
+Organization_Type__pc,
+PSA_Date__pc,
+Payroll_Frequency_Other__pc,
+Payroll_Frequency__pc,
+Payroll_Service_Name__pc,
+Plan_Assets__pc,
+Plan_Type__pc,
+Previous_Firm_Comments__pc,
+Prior_Broker_Dealer_RIA__pc,
+Prior_SEP_Plan__pc,
+Prior_Simple_Plan__pc,
+Priority_Code__pc,
+Profile_Notes__pc,
+Relius_Contact_ID__pc,
+Role_Other__pc,
+Role__pc,
+SSN__pc,
+Takeover_Plan__pc,
+Team_Email__pc,
+Team_Name__pc,
+Team_Number__pc,
+Was_the_Plan_terminated__pc,
+Priority_Graphic__pc,
+Date_Of_Death__pc,
+Participant_Plan__pc
+
+
+
+
+
+///////////////////////////sandbox
+@isTest
+private class SyncAccountWithReliusControllerTest {
+    @testSetup static void setup(){
+        List<ReliusEmployerFieldMapping__c> employerMappingList = new List<ReliusEmployerFieldMapping__c>();
+        
+        ReliusEmployerFieldMapping__c mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 1', Relius_Attribute__c='erid', Salesforce_Field__c = 'Employer_ID__c');
+        employerMappingList.add(mappingA);
+        
+        mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 2', Relius_Attribute__c='ein');
+        employerMappingList.add(mappingA);
+        
+        mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 3', Relius_Attribute__c='conam', Salesforce_Field__c = 'Name');
+        employerMappingList.add(mappingA);
+        
+        mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 4', Relius_Attribute__c='eraddress.streetAddress1', Salesforce_Field__c = 'BillingStreet');
+        employerMappingList.add(mappingA);
+        
+        /*mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 5', Relius_Attribute__c='eraddress.address.streetAddress1', Salesforce_Field__c = 'BillingStreet');
+        employerMappingList.add(mappingA);
+        
+        mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 6', Relius_Attribute__c='eraddress.streetAddress1', Salesforce_Field__c = 'Xyz');
+        employerMappingList.add(mappingA);*/
+        insert employerMappingList;
+        
+        List<Account> companyList = new List<Account>();
+        companyList.add(new Account(Name='test1',Employer_ID__c='1'));
+        companyList.add(new Account(Name='test2',Employer_ID__c='2'));
+   
+        companyList.add(new Account(Name='test4'));
+        insert companyList;
+    }
+    static testMethod void testProcess0(){
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));    
+    }
+    static testMethod void testProcess1(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='error');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id)); 
+        Test.stopTest();
+        delete [SELECT Id FROM PenServAPISetting__c];
+    }
+    static testMethod void testProcess2(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.error');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess3(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c  FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess4(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='2' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess5(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess6(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Name='test4' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess7(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(null);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(null));
+        Test.stopTest();
+    }
+    static testMethod void testProcess8(){
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        List<ReliusEmployerFieldMapping__c> employerMappingList = new List<ReliusEmployerFieldMapping__c>();
+        ReliusEmployerFieldMapping__c mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 5', Relius_Attribute__c='eraddress.address.streetAddress1', Salesforce_Field__c = 'BillingStreet');
+        employerMappingList.add(mappingA);
+        insert employerMappingList;
+        
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id); 
+        Test.stopTest();
+    }
+    
+    static testMethod void testProcess9(){
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        List<ReliusEmployerFieldMapping__c> employerMappingList = new List<ReliusEmployerFieldMapping__c>();
+        ReliusEmployerFieldMapping__c mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 6', Relius_Attribute__c='eraddress.streetAddress1', Salesforce_Field__c = 'Xyz');
+        employerMappingList.add(mappingA);
+        insert employerMappingList;
+        
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id); 
+        Test.stopTest();
+    }
+    
+    static testMethod void testProcess10(){
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        Test.stopTest();
+    }
+}
+////////// sandbox test classses
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@isTest
+private class SyncPlansOnAccountControllerTest {
+    @testSetup static void setup(){
+        List<ReliusPlanFieldMappings__c> planMappingList = new List<ReliusPlanFieldMappings__c>();
+        
+        ReliusPlanFieldMappings__c mappingA = new ReliusPlanFieldMappings__c(Name='Mapping 1', Relius_Attribute__c='planid', Salesforce_Field__c = 'Plan_ID__c');
+        planMappingList.add(mappingA);
+        
+        mappingA = new ReliusPlanFieldMappings__c(Name='Mapping 2', Relius_Attribute__c='plannam', Salesforce_Field__c = 'Name');
+        planMappingList.add(mappingA);
+        
+        insert planMappingList;
+        
+        List<Plans__c> planList = new List<Plans__c>();
+        List<Account> companyList = new List<Account>();
+        companyList.add(new Account(Name='test1',Employer_ID__c='1'));
+        companyList.add(new Account(Name='test2',Employer_ID__c='2'));
+        companyList.add(new Account(Name='test3',Employer_ID__c='3'));
+        companyList.add(new Account(Name='test3',Employer_ID__c='4'));
+        companyList.add(new Account(Name='test4'));
+        insert companyList;
+
+        planList.add(new Plans__c(Plan_ID__c='1',Company_Name__c = companyList[0].Id));
+        planList.add(new Plans__c(Plan_ID__c='1',Company_Name__c = companyList[1].Id));
+        planList.add(new Plans__c(Plan_ID__c='1',Company_Name__c = companyList[0].Id));
+        insert planList;
+    }
+    static testMethod void testProcess0(){
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(acc.Id));    
+    }
+    static testMethod void testProcess1(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='error');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(acc.Id)); 
+        Test.stopTest();
+        delete [SELECT Id FROM PenServAPISetting__c];
+    }
+    static testMethod void testProcess2(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.error');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    
+    static testMethod void testProcess3(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    
+    static testMethod void testProcess5(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='2' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess6(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='3' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess7(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Employer_ID__c ='4' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(acc.Id));
+        Test.stopTest();
+    }
+	static testMethod void testProcess8(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Name='test4' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess9(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        system.debug(syncPlansWithReliusOnAccountController.syncPlansWithRelius(NULL));
+        Test.stopTest();
+    }
+}
+
+/*
+ * Description : Accounts (Employers) are matched by the ERID first then the EIN number from the "GetEmployerByEIN" and "GetEmployerByERID" endpoints. 
+ * Date : 10-01-2023
+*/
+public class SyncAccountWithReliusController {
+    @AuraEnabled
+    public static String syncAccountWithRelius(String recordId){
+        String returnString = 'Something went wrong.';
+        try{
+            Account acc = [SELECT Id, Employer_ID__c FROM Account WHERE Id = :recordId];
+            List<PenServAPISetting__c> perServList = [SELECT Id, Name, Username__c, Password__c, Endpoint__c FROM PenServAPISetting__c];
+            
+            if(perServList != NULL && perServList.size()>0) {
+                ReliusAPIUtil.ReliusAuthenticationWrapper authenticateResp = ReliusAPIUtil.authenticateUser(perServList[0].Username__c, perServList[0].Password__c, perServList[0].Endpoint__c);
+                if(authenticateResp.status == 1) {
+                    String accessToken = authenticateResp.message;
+                    
+                    if(acc.Employer_ID__c != NULL && acc.Employer_ID__c != ''){
+                        returnString = ReliusAPIUtil.getEmployerDetails(perServList[0].Endpoint__c+'/Employers/GetEmployerByERID?ERID='+acc.Employer_ID__c, accessToken, recordId);
+                    } 
+                  
+                    else {
+                        returnString = 'Something went wrong. Please populate either Employer ID ';
+                    }
+                } else {
+                    returnString = authenticateResp.message;
+                }
+            } else {
+                returnString = 'Something went wrong. Please check the PenServ API settings.';
+            }
+        } catch(Exception e){
+            returnString = 'Something went wrong. Error detail: '+e.getMessage();
+        }
+        return returnString;
+    }
+}
+
+
+//////////////////////
+public class SyncAccountWithReliusController {
+    @AuraEnabled
+    public static String syncAccountWithRelius(String recordId){
+        String returnString = 'Something went wrong.';
+        try{
+            Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Id = :recordId];
+            List<PenServAPISetting__c> perServList = [SELECT Id, Name, Username__c, Password__c, Endpoint__c FROM PenServAPISetting__c];
+            
+            if(perServList != NULL && perServList.size()>0) {
+                ReliusAPIUtil.ReliusAuthenticationWrapper authenticateResp = ReliusAPIUtil.authenticateUser(perServList[0].Username__c, perServList[0].Password__c, perServList[0].Endpoint__c);
+                if(authenticateResp.status == 1) {
+                    String accessToken = authenticateResp.message;
+                    
+                    if(acc.Employer_ID__c != NULL && acc.Employer_ID__c != ''){
+                        returnString = ReliusAPIUtil.getEmployerDetails(perServList[0].Endpoint__c+'/Employers/GetEmployerByERID?ERID='+acc.Employer_ID__c, accessToken, recordId);
+                    } 
+                    else if(acc.Tax_IDEIN__c != NULL && acc.Tax_IDEIN__c != 0/*''*/){
+                        returnString = ReliusAPIUtil.getEmployerDetails(perServList[0].Endpoint__c+'/Employers/GetEmployerByEIN?EIN='+acc.Tax_IDEIN__c, accessToken, recordId);
+                    }
+                    else {
+                        returnString = 'Something went wrong. Please populate either Employer ID or Tax ID/EIN.';
+                    }
+                } else {
+                    returnString = authenticateResp.message;
+                }
+            } else {
+                returnString = 'Something went wrong. Please check the PenServ API settings.';
+            }
+        } catch(Exception e){
+            returnString = 'Something went wrong. Error detail: '+e.getMessage();
+        }
+        return returnString;
+    }
+}
+
+
+
+
+
+
+@isTest
+private class SyncAccountWithReliusControllerTest {
+    @testSetup static void setup(){
+        
+          // Create Account Record Type Id
+         Id accountRecordTypeId = [SELECT Id FROM RecordType WHERE SObjectType = 'Account' AND DeveloperName = 'Other' LIMIT 1].Id;
+        
+        List<ReliusEmployerFieldMapping__c> employerMappingList = new List<ReliusEmployerFieldMapping__c>();
+        
+        ReliusEmployerFieldMapping__c mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 1', Relius_Attribute__c='erid', Salesforce_Field__c = 'Employer_ID__c');
+        employerMappingList.add(mappingA);
+        
+        mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 2', Relius_Attribute__c='ein', Salesforce_Field__c = 'Tax_IDEIN__c');
+        employerMappingList.add(mappingA);
+        
+        mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 3', Relius_Attribute__c='conam', Salesforce_Field__c = 'Name');
+        employerMappingList.add(mappingA);
+        
+        mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 4', Relius_Attribute__c='eraddress.streetAddress1', Salesforce_Field__c = 'BillingStreet');
+        employerMappingList.add(mappingA);
+        
+        /*mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 5', Relius_Attribute__c='eraddress.address.streetAddress1', Salesforce_Field__c = 'BillingStreet');
+        employerMappingList.add(mappingA);
+        
+        mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 6', Relius_Attribute__c='eraddress.streetAddress1', Salesforce_Field__c = 'Xyz');
+        employerMappingList.add(mappingA);*/
+        insert employerMappingList;
+        
+        List<Account> companyList = new List<Account>();
+        companyList.add(new Account(Name='test1',Employer_ID__c='1', RecordTypeId=accountRecordTypeId));
+        companyList.add(new Account(Name='test2',Employer_ID__c='2', RecordTypeId=accountRecordTypeId));
+        companyList.add(new Account(Name='test3',Tax_IDEIN__c= 1, RecordTypeId=accountRecordTypeId /*'1'*/));
+        companyList.add(new Account(Name='test4', RecordTypeId=accountRecordTypeId));
+        insert companyList;
+    }
+    static testMethod void testProcess0(){
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));    
+    }
+    static testMethod void testProcess1(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='error');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id)); 
+        Test.stopTest();
+        delete [SELECT Id FROM PenServAPISetting__c];
+    }
+    static testMethod void testProcess2(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.error');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess3(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess4(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='2' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess5(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Tax_IDEIN__c = 1/*'1'*/ LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess6(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Name='test4' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(acc.Id));
+        Test.stopTest();
+    }
+    static testMethod void testProcess7(){
+        delete [SELECT Id FROM PenServAPISetting__c];
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(null);
+        //system.debug(SyncAccountWithReliusController.syncAccountWithRelius(null));
+        Test.stopTest();
+    }
+    static testMethod void testProcess8(){
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        List<ReliusEmployerFieldMapping__c> employerMappingList = new List<ReliusEmployerFieldMapping__c>();
+        ReliusEmployerFieldMapping__c mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 5', Relius_Attribute__c='eraddress.address.streetAddress1', Salesforce_Field__c = 'BillingStreet');
+        employerMappingList.add(mappingA);
+        insert employerMappingList;
+        
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id); 
+        Test.stopTest();
+    }
+    
+    static testMethod void testProcess9(){
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        List<ReliusEmployerFieldMapping__c> employerMappingList = new List<ReliusEmployerFieldMapping__c>();
+        ReliusEmployerFieldMapping__c mappingA = new ReliusEmployerFieldMapping__c(Name='Mapping 6', Relius_Attribute__c='eraddress.streetAddress1', Salesforce_Field__c = 'Xyz');
+        employerMappingList.add(mappingA);
+        insert employerMappingList;
+        
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id); 
+        Test.stopTest();
+    }
+    
+    static testMethod void testProcess10(){
+        insert new PenServAPISetting__c(Name='test',Username__c='test@gmail.com',Password__c='test@123',Endpoint__c='test.com');
+        
+        Test.startTest();
+        Account acc = [SELECT Id, Employer_ID__c, Tax_IDEIN__c FROM Account WHERE Employer_ID__c ='1' LIMIT 1];
+        Test.setMock(HttpCalloutMock.class, new ReliusAPIUtilCalloutMock());
+        SyncAccountWithReliusController.syncAccountWithRelius(acc.Id);
+        Test.stopTest();
+    }
+}

@@ -1,0 +1,2385 @@
+<!-- distributionForm.html -->
+<template>
+    <lightning-card title="">
+        <div class="slds-p-around_medium">
+
+            <!-- Filter Section -->
+            <div class="slds-grid slds-wrap slds-gutters">
+             <!--  <b> <h3 class="slds-col slds-size_1-of-1"></h3></b></br>-->
+                <div class="slds-col slds-size_1-of-1">
+                    <lightning-radio-group
+                        label="SEARCH BY"
+                        value={searchBy}
+                        options={searchOptions}
+                        onchange={handleSearchByChange} class="custom-radio-group"
+                    ></lightning-radio-group>
+                </div>
+
+                <div class="slds-col slds-size_1-of-3">
+                      <lightning-input label="Enter Contact Name" value={contactName} onchange={handleContactNameChange} onkeyup={handleKeyUp} data-id="contactInput" class="contact-input" disabled={isSearchingBySSN}></lightning-input>
+                 <div class="slds-col slds-size_1-of-1">
+                    <template if:true={suggestions.length}>
+                        <ul class="slds-list_dotted suggestion-list">
+                            <template for:each={suggestions} for:item="contact">
+                                <li key={contact.Id} data-id={contact.Id} onclick={handleSuggestionClick}>
+                                    {contact.Name}
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+                       </div>
+                <div class="slds-col slds-size_1-of-3">
+                     <lightning-input label="Social Security Number" value={socialSecurityNumber} onchange={handleSSNChange} disabled={isSearchingByName}></lightning-input>
+             
+                  </div>
+                <div class="slds-col slds-size_1-of-3">
+                     <lightning-combobox label="Contact" value={selectedContactId} options={contactOptions} onchange={handleContactChange} disabled={isSearchingByName}></lightning-combobox>
+              
+                    </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-combobox label="Company" value={selectedCompanyId} options={companyOptions} onchange={handleCompanyChange} disabled={disableCompanyDropdown} required></lightning-combobox>
+                </div>
+                
+               
+            </div>
+
+            <!-- Display Only Section -->
+            <div class="slds-grid slds-wrap slds-gutters">
+                <h3 class="slds-col slds-size_1-of-1">Contact Information</h3>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="First Name" value={contact.FirstName} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Middle Name" value={contact.MiddleName} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="SSN" value={contact.Social_secuirty_number__c} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Email" value={contact.Email} readonly></lightning-input>
+                </div>
+               <!-- <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Contact" value={contact.Name} readonly></lightning-input>
+                </div> -->
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Last Name" value={contact.LastName} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Birth Date" value={contact.Birthdate} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Suffix" value={contact.Suffix} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Phone" value={contact.Phone} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Date of Employment" value={contact.Date_of_Employment__c} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Date of Termination" value={contact.Date_of_Termination__c} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Marital Status" value={contact.Marital_Status__c} readonly></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-3 grayed-out">
+                    <lightning-input label="Other Address" value={contact.otherAddress} readonly></lightning-input>
+                </div>
+            </div>
+
+            <!-- Transaction Fields Section -->
+            <div class="slds-grid slds-wrap slds-gutters">
+                <h3 class="slds-col slds-size_1-of-1">Transaction Fields</h3>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-combobox label="Plan" value={selectedPlanId} options={plans} onchange={handlePlanChange} required></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-combobox label="Status" value={status} options={statusOptions} onchange={handleStatusChange}></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-combobox label="Distribution Plan Type" value={type} options={typeOptions} onchange={handleTypeChange} required></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-combobox label="Election" value={electiontype} options={ElectionOptions} onchange={handleElectionChange} required></lightning-combobox>
+                </div>
+
+                <template if:true={showError}>
+                    <div class="slds-text-color_error slds-col slds-size_1-of-1">{errorMessage}</div>
+                </template>
+            </div>
+
+        </div>
+               
+               
+        <template if:true={showFields}>
+            <div class="slds-col slds-size_1-of-3">
+            <div class="slds-m-around_medium">
+             <lightning-accordion allow-multiple-section-opening>
+             <lightning-accordion-section name="RMD" label="RMD">
+                <lightning-combobox label="RMD Election" value={RMDElection} options={RMDElectionOptions} onchange={handleRMDElectionChange}></lightning-combobox>
+                    <template if:true={showCommencementdate}>
+                      <lightning-input label="RMD Commencement Date" type="date" value={Commencementdate} onchange={handleCommencementdateChange} ></lightning-input>  
+                    </template>  
+                <lightning-combobox label="RMD Amount Election" value={RMDAmount} options={RMDAmountOptions} onchange={handleRMDAmountChange}></lightning-combobox>
+                        <template if:true={showGrossAmount}>
+                        <lightning-input label="RMD Gross Amount" value={GrossAmount} onchange={handleGrossAmountChange} ></lightning-input>  
+                        </template> 
+                <lightning-combobox label="RMD Liquidation Election" value={RMDLiquidation} options={RMDLiquidationOptions} onchange={handleRMDLiquidationChange}></lightning-combobox>
+                <!-- new code-->
+                <!--<template> -->
+    <lightning-layout multiple-rows>
+        <template for:each={rows} for:item="row" for:index="index">
+            <lightning-layout-item key={row.id} size="12">
+                <lightning-layout horizontal-align="spread" class="slds-box slds-box_xx-small">
+                <!-- new code-->                
+                 <template if:true={showsourceFields}>
+                  <lightning-combobox  label="RMD Source Fund" value={row.SourceFund} options={RMDSourceFundOptions} data-id={row.id} onchange={handleSourceFundChange}> </lightning-combobox> 
+                  <lightning-combobox  label="RMD Source Format" value={row.SourceFormat} options={RMDSourceFormatOptions} data-id={row.id}     onchange={handleSourceFormatChange}> </lightning-combobox> 
+                </template>   
+
+                 <template if:true={row.showPercent}>
+                  <lightning-input label="RMD Source Percent" value={row.SourcePercent} onchange={handleSourcePercentChange} data-id={row.id}></lightning-input> 
+                  </template> 
+                  <template if:true={row.showAmount}>
+                  <lightning-input label="RMD Source Amount" value={row.SourceAmount} onchange={handleSourceAmountChange} data-id={row.id}></lightning-input>
+                  </template>
+
+                   <!-- new code-->
+                   <template if:true={showsourceFields}>
+                     <lightning-button 
+                        icon-name="utility:add" 
+                        alternative-text="Add Row" 
+                        onclick={handleAddRow}
+                        class="slds-m-left_small">
+                    </lightning-button>
+
+                    <lightning-button 
+                        icon-name="utility:delete" 
+                        alternative-text="Delete Row" 
+                        onclick={handleDeleteRow} 
+                        data-id={row.id}>
+                    </lightning-button>
+                    </template> 
+                </lightning-layout>
+            </lightning-layout-item>
+        </template>
+    </lightning-layout>
+ <!--</template> -->
+                    <!-- new code-->
+
+                 </lightning-accordion-section>
+                 </lightning-accordion>
+            </div></div>
+        </template> 
+
+                <template if:true={loan}>
+                <div class="slds-m-around_medium">
+                <lightning-accordion allow-multiple-section-opening>
+                <lightning-accordion-section name="LOAN" label="LOAN">
+                    <lightning-combobox label="Loan Type" value={loantype} min="1" type="number" options={loanOptions} onchange={handleloanChange}></lightning-combobox>
+                    
+                    <lightning-input label="Loan Term" value={loanterm} min="1"   onchange={handleloantermChange} ></lightning-input>  
+                        <template if:true={errorMessage}>
+                    <div class="slds-text-color_error">{errorMessage}</div>
+                </template>
+            
+                    <lightning-input label="Loan Amount" value={loanamt} type="number" onchange={handleloanamtChange} ></lightning-input>       
+                    </lightning-accordion-section>
+                    </lightning-accordion>
+                </div>
+                    </template>   
+
+          <template if:true={DeathOfParticipant}>
+            <div class="slds-m-around_medium">
+            <lightning-accordion allow-multiple-section-opening>
+            <lightning-accordion-section name="Death Of Participant" label="Death Of Participant">
+              
+                  
+                    <lightning-combobox label="Death Of Participant" value={DeathofparticipantType}  options={DeathofparticipantOptions} onchange={handleDeathofparticipantChange}> </lightning-combobox>
+
+             </lightning-accordion-section>   
+        </lightning-accordion>
+                 </div>
+                 </template>  
+
+        <template if:true={showTerminationFields}>
+            <div class="slds-m-around_medium">
+            <lightning-accordion allow-multiple-section-opening>
+            <lightning-accordion-section name="Termination" label="Termination">
+              <template if:true={showTraditionalandElectiveFields}>
+                    <lightning-combobox  label="Traditional Retirement Account" value={TraditionalRetirement} options={TraditionalRetirementOptions} onchange={handleTraditionalRetirementChange}> </lightning-combobox>
+                    <template if:true={showTraditionalFields}>
+                    <lightning-input label="Traditional IRA Plan Name" value={TradIRAPlan} onchange={handleTradIRAPlanChange}></lightning-input>
+                    <lightning-input label="Traditional Account Number" value={TradAccount} onchange={handleTradAccountChange}></lightning-input>
+                    <lightning-input label="Traditional Account Delivery Address" value={TradAccountDeliveryAddr} onchange={handleTradAccountDeliveryAddrChange}></lightning-input>
+                    </template > 
+
+                    <lightning-combobox  label="Roth Elective Deferral Account" value={RothElectiveDeferral} options={RothElectiveDeferralOptions} onchange={handleRothElectiveDeferralChange}> </lightning-combobox> 
+                    <template if:true={showElectiveFields}>
+                    <lightning-input label="Roth Elective IRA Plan Name" value={ElectiveIRAPlan} onchange={handleElectiveIRAPlanChange}></lightning-input>
+                    <lightning-input label="Roth Elective Account Number" value={ElectiveAccount} onchange={handleElectiveAccountChange}></lightning-input>
+                    <lightning-input label="Roth Elective Account Delivery Address" value={ElectiveAccountDeliveryAddr} onchange={handleElectiveAccountDeliveryAddrChange}></lightning-input>
+                     </template >
+                </template >
+                     <template if:true={
+					 }>              
+                     <lightning-input type="checkbox" label="Additional Tax Withholding" checked={isTaxWithholdingChecked} onchange={handleCheckboxChange}></lightning-input>
+                      <template if:true={isTaxWithholdingChecked}>
+                     <lightning-input label="Additional Federal Percentage" value={FederalPercent} onchange={handleFederalPercentChange}></lightning-input>
+                     <lightning-input label="Additional State Percentage" value={StatePercent} onchange={handleStatePercentChange}></lightning-input>
+                       <template if:true={errorMessage}>
+            <div class="slds-text-color_error">{errorMessage}</div>
+        </template>
+ </template >
+                      </template>
+             </lightning-accordion-section>   
+        </lightning-accordion>
+                 </div>
+
+
+
+           </template>  
+            <template if:true={showTransferExchangeFields}>
+            <div class="slds-m-around_medium">
+                <lightning-accordion allow-multiple-section-opening>
+                    <lightning-accordion-section name="TransferExchange" label="Transfer/Exchange">
+                        <!-- Add content for Transfer/Exchange section here -->
+                         <lightning-combobox  label="Transfer/Exchange Tranaction Type" value={TransferExchange1} options={TransferExchangeOptions1} onchange={handleTransferExchangeChange1}> </lightning-combobox>
+                         <lightning-combobox  label="Transfer/Exchange Transaction Extent" value={TransferExchange2} options={TransferExchangeOptions2} onchange={handleTransferExchangeChange2}> </lightning-combobox>
+                         <lightning-combobox  label="Transfer/Exchange In-Kind Flag" value={TransferExchange3} options={TransferExchangeOptions3} onchange={handleTransferExchangeChange3}> </lightning-combobox>
+                <!-- new code-->
+                <!--<template> -->
+     
+    <lightning-layout multiple-rows>
+        <template for:each={TransferSourcerows} for:item="row" for:index="index">
+            <lightning-layout-item key={row.id} size="12">
+                <lightning-layout horizontal-align="spread" class="slds-box slds-box_xx-small slds-wrap">
+                <!-- new code-->  
+                <lightning-layout-item size="2" class="slds-p-around_x-small">  
+				 <lightning-combobox  label="Src Provider" value={row.SourceFund} options={TransferExchangeOptions4} onchange={handleTransferExchangeChange4} data-id={row.id}> </lightning-combobox>
+                 </lightning-layout-item>
+                 <template if:true={row.showContract}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                <lightning-input label="Contract Number" type="Number" value={row.sourcenumber} onchange={handlesourcenumberTransChange} data-id={row.id}></lightning-input> 
+                </lightning-layout-item>
+                <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                <lightning-input label="Contract Date" type="date" value={row.sourcedate} onchange={handlesourcedateTransChange} data-id={row.id}></lightning-input>  
+                </lightning-layout-item>
+                <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                <lightning-combobox  label="Format" value={row.SourceFormat} options={RMDSourceFormatOptions} data-id={row.id} onchange={handleSourceFormatTransChange}> </lightning-combobox> 
+                </lightning-layout-item>
+                </template>   
+
+                 <template if:true={row.showPercent}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                  <lightning-input label="Percent" value={row.SourcePercent} onchange={handleSourcePercentTransChange} data-id={row.id}></lightning-input> 
+                  </lightning-layout-item>
+                  </template> 
+                  <template if:true={row.showAmount}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                  <lightning-input label="Amount" value={row.SourceAmount} onchange={handleSourceAmountTransChange} data-id={row.id}></lightning-input>
+                  </lightning-layout-item>
+                  </template>
+
+                   <!-- new code--> 
+                   <lightning-layout-item size="1" class="slds-p-around_x-small"> 
+                     <lightning-button 
+                        icon-name="utility:add" 
+                        alternative-text="Add Row" 
+                        onclick={handleAddtransfersourceRow}
+                        class="slds-m-left_small">
+                    </lightning-button>
+                    </lightning-layout-item>
+                   <lightning-layout-item size="1" class="slds-p-around_x-small"> 
+                    <lightning-button 
+                        icon-name="utility:delete" 
+                        alternative-text="Delete Row" 
+                        onclick={handleDeleteSourceRow} 
+                        data-id={row.id}>
+                    </lightning-button>  
+                    </lightning-layout-item>
+                </lightning-layout>
+
+                <lightning-layout horizontal-align="spread" class="slds-box slds-box_xx-small slds-wrap">
+                <!-- new code-->  
+                <lightning-layout-item size="2" class="slds-p-around_x-small">  
+				 <lightning-combobox  label="Des Provider" value={row.DesFund} options={TransferExchangeOptions5} onchange={handleTransferExchangeChange5} data-id={row.id}> </lightning-combobox>
+                 </lightning-layout-item>
+                 <template if:true={row.DesshowContract}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                <lightning-input label="Contract Number" type="Number" value={row.Desnumber} onchange={handleDestinationnumberChange} data-id={row.id}></lightning-input> 
+                </lightning-layout-item>
+                <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                <lightning-input label="Contract Date" type="date" value={row.Desdate} onchange={handleDestinationdateChange} data-id={row.id}></lightning-input>  
+                </lightning-layout-item>
+                <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                <lightning-combobox  label="Format" value={row.DesFormat} options={RMDSourceFormatOptions} data-id={row.id} onchange={handleSourceFormatDesChange}> </lightning-combobox> 
+                </lightning-layout-item>
+                </template>   
+
+                 <template if:true={row.DesshowPercent}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                  <lightning-input label="Percent" value={row.DesPercent} onchange={handleSourcePercentDesChange} data-id={row.id}></lightning-input> 
+                  </lightning-layout-item>
+                  </template> 
+                  <template if:true={row.DesshowAmount}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                  <lightning-input label="Amount" value={row.DesAmount} onchange={handleSourceAmountDesChange} data-id={row.id}></lightning-input>
+                   </lightning-layout-item>
+                  </template>
+                   <!-- new code-->
+                </lightning-layout>
+
+            </lightning-layout-item>
+        </template>
+    </lightning-layout>
+ <!--</template> -->
+  <!-- new code-->      
+                     <!-- new code-->
+                <!--<template> -->
+          <!--<h2>Destination Investments</h2> -->
+    <lightning-layout multiple-rows>
+        <template for:each={TransferDesrows} for:item="row" for:index="index">
+            <lightning-layout-item key={row.id} size="12">
+                <lightning-layout horizontal-align="spread" class="slds-box slds-box_xx-small slds-wrap">
+                <!-- new code-->  
+                <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+				<lightning-combobox  label="Provider" value={row.SourceFund} options={TransferExchangeOptions5} onchange={handleTransferExchangeChange5} data-id={row.id} class="custom-combobox"> </lightning-combobox>				 
+                  </lightning-layout-item>
+                 <template if:true={row.showContract}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+				 <lightning-input label="Number" type="Number" value={row.Destinationnumber} onchange={handleDestinationnumberChange} data-id={row.id} class="custom-input"></lightning-input>                
+                 </lightning-layout-item>
+                 <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+				 <lightning-input label="Date" type="date" value={row.Destinationdate} onchange={handleDestinationdateChange} data-id={row.id}  class="custom-input"></lightning-input>                    
+                 </lightning-layout-item>
+                 <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                <lightning-combobox  label="Format" value={row.SourceFormat} options={RMDSourceFormatOptions} data-id={row.id} onchange={handleSourceFormatDesChange} class="custom-combobox"> </lightning-combobox> 
+                </lightning-layout-item>
+                </template>   
+
+                 <template if:true={row.showPercent}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                  <lightning-input label="Percent" value={row.SourcePercent} onchange={handleSourcePercentDesChange} data-id={row.id} class="custom-input"></lightning-input> 
+                  </lightning-layout-item>
+                  </template> 
+                  <template if:true={row.showAmount}>
+                    <lightning-layout-item size="2" class="slds-p-around_x-small"> 
+                  <lightning-input label="Amount" value={row.SourceAmount} onchange={handleSourceAmountDesChange} data-id={row.id} class="custom-input"></lightning-input>
+                  </lightning-layout-item>
+                  </template>
+
+                   <!-- new code--> 
+                   <lightning-layout-item size="1" class="slds-p-around_x-small"> 
+                     <lightning-button 
+                        icon-name="utility:add" 
+                        alternative-text="Add Row" 
+                        onclick={handleAddtransferDesRow}
+                        class="slds-m-left_small">
+                    </lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="1" class="slds-p-around_x-small"> 
+                    <lightning-button 
+                        icon-name="utility:delete" 
+                        alternative-text="Delete Row" 
+                        onclick={handleDeleteDesRow} 
+                        data-id={row.id}>
+                    </lightning-button>                     
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </template>
+    </lightning-layout>
+ <!--</template> -->
+  <!-- new code-->      
+                                  
+                                  </lightning-accordion-section>
+                </lightning-accordion>
+            </div>
+        </template>
+          
+
+
+
+
+   
+            <template if:true={ShowHardship}>
+            <div class="slds-m-around_medium">
+                <lightning-accordion allow-multiple-section-opening>
+                    <lightning-accordion-section name="Hardship" label="Hardship">
+                        <!-- Add content for Hardship section here -->
+                        <lightning-input type="checkbox" label="Unreimbursed Medical Expense" checked={isMedicalChecked} onchange={handleMedicalChange}></lightning-input>
+                         <template if:true={isMedicalChecked}>
+                                 <lightning-input label="Unreimbursed Medical Amount" type="Number" value={MedicalAmount} onchange={handleMedicalAmountChange} ></lightning-input>  
+                        </template>     
+                        <lightning-input type="checkbox" label="Primary Residence Purchase" checked={isResidenceChecked} onchange={handleResidenceChange}></lightning-input>
+                        <template if:true={isResidenceChecked}>
+                                 <lightning-input label="Residence Purchase Amount" type="Number" value={ResidenceAmount} onchange={handleResidenceAmountChange} ></lightning-input>  
+                        </template> 
+                        <lightning-input type="checkbox" label="Education Expense" checked={isEducationChecked} onchange={handleEducationChange}></lightning-input>
+                        <template if:true={isEducationChecked}>
+                                 <lightning-input label="Education Amount" type="Number" value={EducationAmount} onchange={handleEducationAmountChange} ></lightning-input>  
+                        </template> 
+                        <lightning-input type="checkbox" label="Primary Residence Foreclosure/Eviction" checked={isForeclosureChecked} onchange={handleForeclosureChange}></lightning-input>
+                        <template if:true={isForeclosureChecked}>
+                                 <lightning-input label="Residence Foreclosure/Eviction Amount" type="Number" value={ForeclosureAmount} onchange={handleForeclosureAmountChange} ></lightning-input>  
+                        </template> 
+                        <lightning-input type="checkbox" label="Primary Residence Repair Expense" checked={isRepairChecked} onchange={handleRepairChange}></lightning-input>
+                        <template if:true={isRepairChecked}>
+                                 <lightning-input label="Residence Casualty Repair Amount" type="Number" value={RepairAmount} onchange={handleRepairAmountChange} ></lightning-input>  
+                        </template> 
+                        <lightning-input type="checkbox" label="Funeral Expense" checked={isFuneralChecked} onchange={handleFuneralChange}></lightning-input>
+                        <template if:true={isFuneralChecked}>
+                                 <lightning-input label="Funeral Amount" type="Number" value={FuneralAmount} onchange={handleFuneralAmountChange} ></lightning-input>  
+                        </template> 
+                         
+                          </lightning-accordion-section>
+                </lightning-accordion>
+            </div>
+        </template>
+
+
+        <lightning-button label="Save" onclick={handleSave}></lightning-button>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+    </lightning-card>
+</template>
+
+import { LightningElement,api, track,wire } from 'lwc';
+//import { refreshApex } from '@salesforce/apex';
+import { createRecord } from 'lightning/uiRecordApi';
+//import { getRecord } from 'lightning/uiRecordApi';
+import DISTRIBUTION_OBJECT from '@salesforce/schema/Distribution__c';
+//import CONTACT_OBJECT from '@salesforce/schema/Contact';
+//import NAME_FIELD from '@salesforce/schema/Distribution__c.Name';
+import getContactsBySSN from '@salesforce/apex/DistssnController.getContactsBySSN';
+import getCompaniesByContact from '@salesforce/apex/DistssnController.getCompaniesByContact';
+import getPlansByCompany from '@salesforce/apex/DistssnController.getPlansByCompany';
+import getTypePicklistValues from '@salesforce/apex/Distributionplantypepicklist.getTypePicklistValues';
+import getElectionPicklistValues from '@salesforce/apex/Distributionplantypepicklist.getElectionPicklistValues';
+import getStatusPicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getStatusPicklistValues';
+import getRMDElectionPicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getRMDElectionPicklistValues';
+import getRMDAmountPicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getRMDAmountPicklistValues';
+import getRMDLiquidationPicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getRMDLiquidationPicklistValues';
+import getRMDSourceFundPicklistValues from '@salesforce/apex/Distributionplantypepicklist.getRMDSourceFundPicklistValues';
+import getRMDSourceFormatPicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getRMDSourceFormatPicklistValues';
+import insertElectionObjects from '@salesforce/apex/ElectionController.insertElectionObjects';
+import searchContacts from '@salesforce/apex/ContactSearchController.searchContacts';
+import getContactByIdAndCompanyId from '@salesforce/apex/ContactSearchController.getContactByIdAndCompanyId';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'; 
+import { NavigationMixin } from 'lightning/navigation';
+
+
+export default class DistributionForm extends NavigationMixin(LightningElement) {
+
+    @track isMedicalChecked = false;
+    @track isResidenceChecked = false;
+    @track isEducationChecked = false;
+    @track isForeclosureChecked = false;
+    @track isRepairChecked = false;
+    @track isFuneralChecked = false;
+    @track isTaxWithholdingChecked = false;
+
+    @track rows = [];
+    @track TransferSourcerows = [];
+    @track TransferDesrows = [];
+    //@track newrecordId;
+    @api newrecordId;
+    @track showFields = false;    
+    @track showCommencementdate = false;
+    @track showGrossAmount = false;
+    @track showsourceFields = false;
+    @track showsource = false;
+    @track showDestination = false;
+    @track showPercent = false;
+    @track showAmount = false;
+    @track showTerminationFields = false; 
+    @track DeathOfParticipant= false; 
+   @track loan = false;
+    @track errorMessage = '';
+
+    @track checkboxfield = false; 
+    @track showTransferExchangeFields = false;
+    @track ShowHardship= false;
+     @track ShowHardship1= false;
+    @track showTraditionalFields = false;  
+    @track showElectiveFields = false;
+    @track showTraditionalandElectiveFields = false;
+   // Track checkbox state
+   
+    @track FederalPercent = ''; // Your state variables for percentages
+    @track StatePercent = '';
+    @track errorMessage = ''; // Error message for validation 
+   @track  MedicalAmount ='';
+    @track ResidenceAmount = '';
+    @track EducationAmount = '';
+    @track ForeclosureAmount = '';
+    @track RepairAmount = '';
+    @track FuneralAmount = '';
+
+    @api planId;
+    @track error = '';
+    //@track name;
+    @track socialSecurityNumber =null;
+    @track contactOptions = [];
+    @track companyOptions = [];
+    @track selectedContactId;
+    @track selectedContactName;
+    //selectedCompanyId;
+   //selectedCompanyName;
+    @track selectedCompanyId;
+    @track selectedPlanId;
+    @track planName; 
+    @track companyName;
+    @track contactName;
+    @track type;
+    @track DeathofparticipantType;
+    @track loantype;
+    @track loanterm=0;
+    @track loanamt;
+    @track electiontype = ' ';
+    @track RMDLiquidation;
+    @track RMDAmount;
+    @track RMDElection;
+    @track Commencementdate;
+	@track GrossAmount;
+	@track SourceFormat;
+    @track SourceFund;
+    @track SourceAmount;
+	@track SourcePercent;
+    @track TraditionalRetirement='No Selection';
+    @track TradIRAPlan;
+    @track TradAccount;
+    @track TradAccountDeliveryAddr;
+    @track RothElectiveDeferral='No Selection';
+    @track ElectiveIRAPlan;
+    @track ElectiveAccount;
+    @track ElectiveAccountDeliveryAddr;
+    @track TransferExchange1;
+    @track TransferExchange2;
+    @track TransferExchange3;
+    @track TransferExchange4;
+    @track TransferExchange5;
+
+    @track sourcenumber;
+    @track sourcedate;
+    @track Destinationnumber;
+    @track Destinationdate;
+
+    @track status;
+
+    @track suggestions = [];
+    @track showError = false;
+
+    typeOptions = [];
+    DeathofparticipantOptions =[];
+    loanOptions =[{ label: 'General', value: 'General' },
+        { label: 'Residential - primary', value: 'Residential - primary' },
+        // Add more options as needed
+        ];
+    ElectionOptions =[];
+    statusOptions = [];
+    RMDElectionOptions = [];
+    RMDAmountOptions = [];
+    RMDLiquidationOptions = [];
+    RMDSourceFundOptions = [];
+    RMDSourceFormatOptions = [];
+    TraditionalRetirementOptions = [];
+    TransferExchangeOptions1=[];
+    TransferExchangeOptions2=[];
+    TransferExchangeOptions3=[];
+    TransferExchangeOptions4=[];
+    TransferExchangeOptions5=[];
+    RothElectiveDeferralOptions = [];
+    plans = [];
+       
+    @track recordId = null;
+    @track accountId = null;
+    @track searchName = null;
+     @track searchBy = 'Name';
+    @track isSearchingByName = true;
+    @track isSearchingBySSN = false;
+    //contact;
+    contact= {};
+    get searchOptions() {
+        return [
+            { label: 'Name', value: 'Name' },
+            { label: 'SSN', value: 'SSN' },
+        ];
+    }
+        handleSearchByChange(event) {
+        this.searchBy = event.detail.value;
+        this.isSearchingByName = false;
+        this.isSearchingBySSN = false;
+        this.isSearchingByName = this.searchBy === 'Name';
+        this.isSearchingBySSN = this.searchBy === 'SSN';
+         console.log("isSearchingByName", this.isSearchingByName);
+          console.log("isSearchingBySSN", this.isSearchingBySSN);
+    }
+
+    // Define the fields to retrieve
+     FIELDS = [
+        'Contact.FirstName',
+        'Contact.LastName',
+        'Contact.MiddleName',
+        'Contact.Suffix',
+        'Contact.Social_secuirty_number__c',
+        'Contact.Birthdate',
+        'Contact.Date_of_Employment__c',
+        'Contact.Date_of_Termination__c',
+        'Contact.Email',
+        'Contact.Phone',
+        'Contact.Marital_Status__c',	
+        'Contact.OtherStreet',
+        'Contact.OtherCity',
+        'Contact.OtherState',
+        'Contact.OtherPostalCode',
+        'Contact.OtherCountry',
+        'Contact.Id'
+    ];
+    
+
+    @track TransferSourcerows = [];
+   // @track TransferDesrows = [];
+
+   // Call this method when you need to insert the rows
+   electionInsert() {
+    const electionData = this.getElectionObjectData();
+    console.log("electionData", electionData.length);
+    if (electionData && electionData.length > 0) {         
+        insertElectionObjects({ electionObjects: electionData });
+    }
+
+    const electionTransfersourceData = this.getElectionObjectTransfersourceData();
+    console.log("electionTransfersourceData", electionTransfersourceData.length);
+    if (electionTransfersourceData && electionTransfersourceData.length > 0) {        
+        insertElectionObjects({ electionObjects: electionTransfersourceData });
+    }
+
+   // const electionTransferdesData = this.getElectionObjectTransferdesData();
+   // console.log("electionTransferdesData", electionTransferdesData.length);
+   // if (electionTransferdesData && electionTransferdesData.length > 0) {        
+   //     insertElectionObjects({ electionObjects: electionTransferdesData });
+   // }
+}
+
+
+    getElectionObjectData() {
+        return this.rows
+            .filter(row => row.SourceFund && row.SourceFund.trim() !== '') // Filter out rows with empty SourceFund
+            .map(row => ({
+            Vendor__c: row.SourceFund,
+            Contribution_Amount__c: row.SourceAmount,
+            Contribution_Percentage__c: row.SourcePercent,
+            Distribution_object__c: this.newrecordId,
+            Name: 'Dist - '+this.newrecordId,
+        }));
+    }
+
+  getElectionObjectTransfersourceData() {
+        return this.TransferSourcerows
+           .filter(row => row.SourceFund && row.SourceFund.trim() !== '') // Filter out rows with empty SourceFund
+           .map(row => ({
+            Transfer_Source_fund__c: row.SourceFund,
+            Source_Contract_Number__c:row.sourcenumber,
+            Source_Contract_Date__c: row.sourcedate,
+            Contribution_Amount__c: row.SourceAmount,
+            Contribution_Percentage__c: row.SourcePercent,
+            Transfer_Destination_Fund__c: row.DesFund,
+            Destination_Contract_Number__c:row.Desnumber,
+            Destination_Contract_Date__c: row.Desdate,
+            Destination_Contribution_Amount__c: row.DesAmount,
+            Contribution_Percentage__c: row.DesPercent,
+            Distribution_object__c: this.newrecordId,
+            Name: 'Dist - '+this.newrecordId,
+        }));
+    }
+
+
+  //getElectionObjectTransferdesData() {
+  //      return this.TransferDesrows
+  //          .filter(row => row.SourceFund && row.SourceFund.trim() !== '') // Filter out rows with empty SourceFund
+  //          .map(row => ({
+  //          Transfer_Destination_Fund__c: row.SourceFund,
+  //          Destination_Contract_Number__c:row.Destinationnumber,
+  //          Destination_Contract_Date__c: row.Destinationdate,
+  //          Contribution_Amount__c: row.SourceAmount,
+  //          Contribution_Percentage__c: row.SourcePercent,
+  //          Distribution_object__c: this.newrecordId,
+  //          Name: 'Dist - '+this.newrecordId
+  //      }));
+  //  }
+
+
+     // Lifecycle hook to initialize default row
+    connectedCallback() {
+        this.addDefaultRow();
+        this.addDefaulttransfersourceRow();
+        //this.addDefaulttransferdesRow();
+    }
+
+   generateUniqueId() {
+        // Function to generate a unique ID for rows
+        return '_' + Math.random().toString(36).substring(2, 9);
+    }
+
+    addDefaultRow() {
+        // Adding a default row
+        this.rows = [
+            {
+                id: this.generateUniqueId(), 
+                SourceFund: '', // Empty value for new rows
+                SourceFormat: '', // Empty value for new rows
+                SourceAmount: '', // Empty value for new rows
+                SourcePercent: '', // Empty value for new rows
+                showPercent: false,
+                showAmount: false,
+            }
+        ];
+
+    }
+
+    addDefaulttransfersourceRow() {
+        // Adding a default row
+        this.TransferSourcerows = [            {
+                id: this.generateUniqueId(), 
+                SourceFund: '', // Empty value for new rows
+                sourcenumber:'',
+                sourcedate:'',
+                SourceFormat: '', // Empty value for new rows
+                SourceAmount: '', // Empty value for new rows
+                SourcePercent: '', // Empty value for new rows
+                showPercent: false,
+                showAmount: false,
+                showContract : false,
+                DesFund: '', // Empty value for new rows
+                Desnumber: '',
+                Desdate: '',
+                DesFormat: '', // Empty value for new rows
+                DesAmount: '', // Empty value for new rows
+                DesPercent: '', // Empty value for new rows
+                DesshowPercent: false,
+                DesshowAmount: false,
+                DesshowContract: false
+            }
+        ];
+
+    }
+   //addDefaulttransferdesRow() {
+   //     // Adding a default row
+   //     this.TransferDesrows = [
+   //         {
+   //             id: this.generateUniqueId(), 
+   //             SourceFund: '', // Empty value for new rows
+   //             Destinationnumber:'',
+   //             Destinationdate:'',                
+   //             SourceFormat: '', // Empty value for new rows
+   //             SourceAmount: '', // Empty value for new rows
+   //             SourcePercent: '', // Empty value for new rows
+   //             showPercent: false,
+   //             showAmount: false,
+   //             showContract : false
+   //         }
+   //     ];
+//
+   // }
+   
+ handleAddRow() {
+        const newRow = {
+            id: this.generateUniqueId(),
+                SourceFund: '', // Empty value for new rows
+                SourceFormat: '', // Empty value for new rows
+                SourceAmount: '', // Empty value for new rows
+                SourcePercent: '', // Empty value for new rows
+                showPercent: false,
+                showAmount: false,
+        };
+        this.rows = [...this.rows, newRow];
+    }
+
+handleAddtransfersourceRow() {
+        const newRow = {
+            id: this.generateUniqueId(),
+                SourceFund: '', // Empty value for new rows                
+                sourcenumber:'',
+                sourcedate:'',
+                SourceFormat: '', // Empty value for new rows
+                SourceAmount: '', // Empty value for new rows
+                SourcePercent: '', // Empty value for new rows
+                showPercent: false,
+                showAmount: false,
+                DesFund: '', // Empty value for new rows
+                Desnumber: '',
+                Desdate: '',
+                DesFormat: '', // Empty value for new rows
+                DesAmount: '', // Empty value for new rows
+                DesPercent: '', // Empty value for new rows
+                DesshowPercent: false,
+                DesshowAmount: false,
+                DesshowContract: false
+        };
+        this.TransferSourcerows = [...this.TransferSourcerows, newRow];
+    }
+
+ //handleAddtransferDesRow() {
+ //       const newRow = {
+ //           id: this.generateUniqueId(),
+ //               SourceFund: '', // Empty value for new rows
+ //               Destinationnumber:'',
+ //               Destinationdate:'',
+ //               SourceFormat: '', // Empty value for new rows
+ //               SourceAmount: '', // Empty value for new rows
+ //               SourcePercent: '', // Empty value for new rows
+ //               showPercent: false,
+ //               showAmount: false,
+ //       };
+ //       this.TransferDesrows = [...this.TransferDesrows, newRow];
+ //   }
+
+    handleDeleteRow(event) {
+        const rowId = event.target.dataset.id;
+
+        if (this.rows.length === 1 && this.rows[0].id === rowId) {
+            // Prevent deletion if there is only one row and it is the first row
+            console.warn('Cannot delete the first row.');
+            return;
+        }
+
+        this.rows = this.rows.filter(row => row.id !== rowId);
+    }
+
+ handleDeleteSourceRow(event) {
+        const rowId = event.target.dataset.id;
+
+        if (this.TransferSourcerows.length === 1 && this.TransferSourcerows[0].id === rowId) {
+            // Prevent deletion if there is only one row and it is the first row
+            console.warn('Cannot delete the first row.');
+            return;
+        }
+
+        this.TransferSourcerows = this.TransferSourcerows.filter(row => row.id !== rowId);
+    }
+  //   handleDeleteDesRow(event) {
+  //      const rowId = event.target.dataset.id;
+//
+  //      if (this.TransferDesrows.length === 1 && this.TransferDesrows[0].id === rowId) {
+  //          // Prevent deletion if there is only one row and it is the first row
+  //          console.warn('Cannot delete the first row.');
+  //          return;
+  //      }
+//
+  //      this.TransferDesrows = this.TransferDesrows.filter(row => row.id !== rowId);
+  //  }
+
+ //New code
+ @wire(getContactByIdAndCompanyId, { recordId: '$recordId', accountId: '$accountId', searchName: '$searchName'})
+    wiredContact({ error, data }) {
+        console.log('Wired contact called');
+    console.log('Record ID:', this.recordId);
+    console.log('Account ID:', this.accountId);
+    console.log('Account ID:', this.searchName);
+        if (data) {
+             console.log('Data received:', JSON.stringify(data, null, 2));
+             console.log('Data received:', data.FirstName);
+            this.selectedContactId = data.Id; 
+            console.log('Company contact id',  this.selectedContactId);
+            this.contact = {
+            FirstName: data.FirstName || '',
+            LastName: data.LastName || '',
+            MiddleName: data.MiddleName || '',
+            Suffix: data.Suffix || '',
+            Social_secuirty_number__c: data.Social_secuirty_number__c || '',
+            Birthdate: data.Birthdate || '',
+            Date_of_Employment__c: data.Date_of_Employment__c || '',
+            Date_of_Termination__c: data.Date_of_Termination__c || '',
+            Email: data.Email || '',
+            Phone: data.Phone || '',
+            Marital_Status__c: data.Marital_Status__c || '',
+            OtherStreet: data.OtherStreet || '',
+            OtherCity: data.OtherCity || '',
+            OtherState: data.OtherState || '',
+            OtherPostalCode: data.OtherPostalCode || '',
+            OtherCountry: data.OtherCountry || '',
+            Id: data.Id || '',
+            };
+             console.log('this.contact:', JSON.stringify(this.contact, null, 2));
+            // Concatenate other address fields into a single formatted string
+            let otherAddress = '';
+            if (this.contact.OtherStreet) {
+                otherAddress += this.contact.OtherStreet + ', ';
+            }
+            if (this.contact.OtherCity) {
+                otherAddress += this.contact.OtherCity + ', ';
+            }
+            if (this.contact.OtherState) {
+                otherAddress += this.contact.OtherState + ' ';
+            }
+            if (this.contact.OtherPostalCode) {
+                otherAddress += this.contact.OtherPostalCode + ', ';
+            }
+            if (this.contact.OtherCountry) {
+                otherAddress += this.contact.OtherCountry;
+            }
+            // Remove trailing comma and space if present
+            otherAddress = otherAddress.trim().replace(/,\s*$/, '');
+
+            this.contact.otherAddress = otherAddress;
+
+        } else if (error) {
+            console.error('Error loading contact', JSON.stringify(error));
+        }
+    }
+ //New code end
+
+   // handleNameChange(event) {
+   //     this.name = event.target.value;
+   // }
+
+   handleCheckboxChange(event) {
+        this.isTaxWithholdingChecked = event.target.checked; // Update checkbox state
+        this.FederalPercent ='';
+        this.StatePercent ='';
+        console.log("isTaxWithholdingChecked", this.isTaxWithholdingChecked);
+    }
+
+    handleFederalPercentChange(event) {
+        this.FederalPercent = event.target.value; // Update federal percentage
+    }
+
+    handleStatePercentChange(event) {
+        this.StatePercent = event.target.value; // Update state percentage
+    }
+
+ handleMedicalChange(event) {
+        this.isMedicalChecked = event.target.checked; 
+        if (!this.isMedicalChecked) {
+            this.MedicalAmount = '';
+        }
+       //this.updateHardshipVisibility();
+        console.log("Medical Checked", this.isMedicalChecked);
+    }
+
+    handleMedicalAmountChange(event){
+        this.MedicalAmount = event.target.value;  
+    }
+ 
+
+    handleResidenceChange(event) {
+       this.isResidenceChecked = event.target.checked;  
+        if (!this.isResidenceChecked) {
+            this.ResidenceAmount = '';
+        }
+        console.log("Residence Checked", this.isResidenceChecked);
+    }
+    handleResidenceAmountChange (event){
+        this.ResidenceAmount = event.target.value;  
+    }
+
+     handleEducationChange(event) {
+        this.isEducationChecked = event.target.checked;  
+        if (!this.isEducationChecked) {
+            this.EducationAmount = '';
+        }
+        console.log("Education Checked", this.isEducationChecked);
+    }
+
+handleEducationAmountChange (event){
+        this.EducationAmount = event.target.value;  
+    }
+
+ handleForeclosureChange(event) {
+          this.isForeclosureChecked = event.target.checked;  
+        if (!this.isForeclosureChecked) {
+            this.ForeclosureAmount = '';
+        }
+        console.log("Foreclosure Checked", this.isForeclosureChecked);
+    }
+
+ handleForeclosureAmountChange (event){
+        this.ForeclosureAmount = event.target.value;  
+    }
+
+     handleRepairChange(event) {
+        this.isRepairChecked = event.target.checked; 
+        if (!this.isRepairChecked) {
+            this.RepairAmount = '';
+        }
+        console.log("Repair Checked", this.isRepairChecked);
+    }
+       handleRepairAmountChange (event){
+        this.RepairAmount = event.target.value;  
+    }
+
+     handleFuneralChange(event) {
+        this.isFuneralChecked = event.target.checked;  
+        if (!this.isFuneralChecked) {
+            this.FuneralAmount = '';
+        }
+        console.log("Funeral Checked", this.isFuneralChecked);
+    }
+   
+     handleFuneralAmountChange (event){
+        this.FuneralAmount = event.target.value; 
+    }
+
+
+    handleSSNChange(event) {
+        this.contactOptions = [];
+        this.contactName = '';
+        this.socialSecurityNumber = event.target.value;
+        console.log("socialSecurityNumber", this.socialSecurityNumber);
+        //this.clearFields1();
+       this.selectedContactId = null; 
+       this.selectedCompanyId = null;
+       this.selectedPlanId = null;
+       this.companyOptions = [];
+       this.companyName = '';
+       this.planName = '';
+       this.plans = [];  
+       this.contact= []; 
+       this.type ='';
+       this.electiontype ='';
+       this.status ='';
+    }
+handleRMDElectionChange(event) {
+        this.RMDElection = event.detail.value; 
+         this.Commencementdate = '';
+        this.updateCommencementdateVisibility();
+        console.log("this.RMDElection", this.RMDElection);
+    }
+
+    handleRMDAmountChange(event) {
+        this.RMDAmount = event.detail.value; 
+        this.GrossAmount = '';
+        this.updateGrossAmountVisibility();
+        console.log("this.RMDAmount", this.RMDAmount);
+    }
+    handleRMDLiquidationChange(event) {
+        this.RMDLiquidation = event.detail.value;  
+        //this.SourceFund= '';
+        //this.SourceFormat = '';
+        this.rows = [];
+        this.addDefaultRow();
+        this.updatesourceFieldsVisibility();      
+        console.log("this.RMDLiquidation", this.RMDLiquidation);
+    }
+
+  handleCommencementdateChange(event) {
+        this.Commencementdate = event.detail.value;  
+        console.log("this.Commencementdate", this.Commencementdate);
+    }
+	handleGrossAmountChange(event) {
+        this.GrossAmount = event.detail.value;  
+        console.log("this.GrossAmount", this.GrossAmount);
+    }
+    
+
+    handleSourceFundChange(event) {
+        const rowId = event.target.dataset.id; // Get the row ID
+        const newValue = event.target.value; // Get the new value
+
+        // Update the row's SourceFund value
+        this.updateRowValue(rowId, 'SourceFund', newValue);
+
+        // Check for duplicates in other rows
+    if (this.isDuplicateSourceFund(newValue, rowId)) { 
+        this.showToastMessage('Duplicate SourceFund value not allowed.', 'error');
+        this.rows = this.rows.filter(row => row.id !== rowId);
+    }
+    }
+
+   showToastMessage(message, variant) {
+    this.dispatchEvent(
+        new ShowToastEvent({
+            title: variant === 'error' ? 'Error' : 'Success',
+            message: message,
+            variant: variant,
+        })
+    );
+} 
+   
+   isDuplicateSourceFund(value, currentRowId) {
+        return this.rows.some(row => row.SourceFund === value && row.id !== currentRowId);
+    }
+
+    //getPreviousSourceFund(rowId) {
+    //    const row = this.rows.find(row => row.id === rowId);
+    //    return row ? row.SourceFund : '';
+    //}
+	
+	handleSourceFormatTransChange(event) {
+
+        const rowId = event.target.dataset.id;        
+        const value = event.target.value;
+        // Update the row's SourceFormat
+        this.updateRowtransValue(rowId, 'SourceFormat', value);
+        // Update the visibility flags for this row
+        this.updateRowsourceVisibility(rowId);
+    }
+
+    handleSourceFormatDesChange(event) {
+
+        const rowId = event.target.dataset.id;        
+        const value = event.target.value;
+        // Update the row's SourceFormat
+        this.updateRowtransValue(rowId, 'DesFormat', value);
+        // Update the visibility flags for this row
+        this.updateRowsourceVisibility(rowId);
+    }
+
+
+    handleSourceFormatChange(event) {
+
+        const rowId = event.target.dataset.id;        
+        const value = event.target.value;
+
+        // Update the row's SourceFormat
+        this.updateRowValue(rowId, 'SourceFormat', value);
+
+        // Update the visibility flags for this row
+        this.updateRowVisibility(rowId);
+    }
+
+	handleSourceAmountChange(event) {
+        this.SourceAmount = event.detail.value;  
+        console.log("this.SourceAmount", this.SourceAmount);
+        
+        const rowId = event.target.dataset.id;
+        const value = event.target.value;
+        this.updateRowValue(rowId, 'SourceAmount', value);
+        //this.updateRowValue(rowId, 'showAmount', true);
+        
+    }
+	handleSourcePercentChange(event) {
+        this.SourcePercent = event.detail.value;  
+        console.log("this.SourcePercent", this.SourcePercent);
+
+        const rowId = event.target.dataset.id;
+        const value = event.target.value;
+        this.updateRowValue(rowId, 'SourcePercent', value);
+        //this.updateRowValue(rowId, 'showPercent', true);
+    }
+
+    updateRowValue(rowId, field, value) {
+        // Update a specific field value for a row
+        this.rows = this.rows.map(row => 
+            row.id === rowId ? { ...row, [field]: value } : row
+        );
+    }
+
+updateRowtransValue(rowId, field, value) {
+        // Update a specific field value for a row
+        this.TransferSourcerows = this.TransferSourcerows.map(row => 
+            row.id === rowId ? { ...row, [field]: value } : row
+        );
+    }
+
+ //updateRowDesValue(rowId, field, value) {
+ //       // Update a specific field value for a row
+ //       this.TransferDesrows = this.TransferDesrows.map(row => 
+ //           row.id === rowId ? { ...row, [field]: value } : row
+ //       );
+ //   }   
+
+     handleTraditionalRetirementChange(event) {
+        this.TraditionalRetirement = event.detail.value; 
+        this.TradIRAPlan ='';     
+        this.TradAccount ='';
+        this.TradAccountDeliveryAddr ='';
+        this.showTraditionalFields =false;
+        this.updateTerminationVisibility();
+        console.log("this.TraditionalRetirement", this.TraditionalRetirement);
+    }
+
+    handleTradIRAPlanChange(event) {
+        this.TradIRAPlan = event.detail.value;  
+        console.log("this.TradIRAPlan", this.TradIRAPlan);
+    }
+
+    handleTradAccountChange(event) {
+        this.TradAccount = event.detail.value;  
+        console.log("this.TradAccount", this.TradAccount);
+    }
+
+    handleTradAccountDeliveryAddrChange(event) {
+        this.TradAccountDeliveryAddr = event.detail.value; 
+        console.log("this.TradAccountDeliveryAddr", this.TradAccountDeliveryAddr);
+    }
+
+
+
+     handleRothElectiveDeferralChange(event) {
+        this.RothElectiveDeferral = event.detail.value; 
+        this.ElectiveIRAPlan ='';
+        this.ElectiveAccount ='';
+        this.ElectiveAccountDeliveryAddr ='';
+        this.showElectiveFields =false;
+        this.updateTerminationVisibility();
+        console.log("this.RothElectiveDeferral", this.RothElectiveDeferral);
+    }
+
+
+    handleElectiveIRAPlanChange(event) {
+        this.ElectiveIRAPlan = event.detail.value;  
+        console.log("this.ElectiveIRAPlan", this.ElectiveIRAPlan);
+    }
+
+    handleElectiveAccountChange(event) {
+        this.ElectiveAccount = event.detail.value;  
+        console.log("this.ElectiveAccount", this.ElectiveAccount);
+    }
+
+    handleElectiveAccountDeliveryAddrChange(event) {
+        this.ElectiveAccountDeliveryAddr = event.detail.value; 
+        console.log("this.ElectiveAccountDeliveryAddr", this.ElectiveAccountDeliveryAddr);
+    }
+
+
+     // Event handler for Type change
+    handleTypeChange(event) {
+        this.type = event.detail.value;
+        this.clearRMDFields();
+        this.clearTerminationFields();
+        this.clearhardshipFields();
+        this.clearloanFields();
+        this.updateVisibility();
+        console.log("this.type", this.type);
+    }
+     handleDeathofparticipantChange(event) {
+        this.DeathofparticipantType = event.detail.value;
+     
+        console.log("this.DeathofparticipantType", this.DeathofparticipantType);
+    }
+    handleloanChange(event) {
+        this.loantype = event.detail.value;
+         this.loanterm = ''; // Reset loan term when loan type changes
+       this.errorMessage = ''; 
+        console.log("this.loantype", this.loantype);
+    }
+    handleloantermChange(event) {
+        this.loanterm = (event.detail.value);
+ 
+
+        console.log("this.loanterm", this.loanterm);
+    }
+    handleloanamtChange(event) {
+        this.loanamt = (event.detail.value);
+    
+        console.log("this.loanamt", this.loanamt);
+    }
+   
+     // Event handler for election change
+    handleElectionChange(event) {
+        this.electiontype = event.detail.value;
+        this.clearRMDFields();
+        this.clearTerminationFields();
+        this.updateVisibility();
+        this.isTaxWithholdingChecked = false;
+        console.log("this.type", this.electiontype);
+    }
+
+    // Event handler for Status change
+    handleStatusChange(event) {
+        this.status = event.detail.value;
+    }
+ handleTransferExchangeChange1(event) {
+        this.TransferExchange1 = event.detail.value; 
+        
+    }
+    handleTransferExchangeChange2(event) {
+        this.TransferExchange2 = event.detail.value; 
+        
+    }
+    handleTransferExchangeChange3(event) {
+        this.TransferExchange3 = event.detail.value; 
+        
+    }
+    handleTransferExchangeChange4(event) {
+        this.TransferExchange4 = event.detail.value; 
+        //this.showSource =true;
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'SourceFund', this.TransferExchange4);
+        // Update the row's SourceFormat
+        this.updateRowtransValue(rowId, 'showContract', true);
+    }
+    handleTransferExchangeChange5(event) {
+        this.TransferExchange5 = event.detail.value; 
+        const rowId = event.target.dataset.id;  
+         this.updateRowtransValue(rowId, 'DesFund', this.TransferExchange5);
+        // Update the row's SourceFormat
+        this.updateRowtransValue(rowId, 'DesshowContract', true);
+        //this.showDestination =true;
+        
+    }
+
+  //Transfer start
+      handlesourcenumberTransChange(event) {
+        this.sourcenumber = event.detail.value;  
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'sourcenumber', this.sourcenumber);  
+    }
+	
+	   handlesourcedateTransChange(event) {
+        this.sourcedate = event.detail.value;  
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'sourcedate', this.sourcedate);  
+    }
+	
+	
+         handleSourcePercentTransChange(event) {
+        this.SourcePercent = event.detail.value;  
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'SourcePercent', this.SourcePercent);  
+    }
+	
+	     handleSourceAmountTransChange(event) {
+        this.SourceAmount = event.detail.value;  
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'SourceAmount', this.SourceAmount);  
+    }
+     handleDestinationnumberChange(event) {
+        this.Destinationnumber = event.detail.value;  
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'Desnumber', this.Destinationnumber);  
+        
+    }
+
+    handleDestinationdateChange(event) {
+        this.Destinationdate = event.detail.value;   
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'Desdate', this.Destinationdate);  
+        
+    }
+
+        handleSourcePercentDesChange(event) {
+        this.SourcePercent = event.detail.value;  
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'DesPercent', this.SourcePercent);  
+    }
+
+      handleSourceAmountDesChange(event) {
+        this.SourceAmount = event.detail.value;  
+        const rowId = event.target.dataset.id;  
+        this.updateRowtransValue(rowId, 'DesAmount', this.SourceAmount);  
+    }
+
+  //Transfer end
+
+
+  
+
+    handlesourcenumberChange(event) {
+       this.sourcenumber = event.detail.value; 
+        
+    }
+
+    handlesourcedateChange(event) {
+        
+         this.sourcedate = event.detail.value; 
+    }
+
+   
+
+    updateVisibility() {
+        if (this.type === 'Required Minimum Distribution (RMD)' &&
+            (this.electiontype.startsWith('A.')  //=== 'A. Vested Rollover To Traditional Retirement Account' 
+            || this.electiontype.startsWith('B.') )) {
+            this.showFields = true;
+            this.DeathOfParticipant= false;
+            this.showTerminationFields = false;
+            this.loan = false;
+            this.checkboxfield = false;
+            this.showTransferExchangeFields = false;
+            console.log("this.showFields", this.showFields);
+
+        } 
+         else if (this.type === 'Loan' &&
+            (this.electiontype.startsWith('A.') //=== 'A. Vested Rollover To Traditional Retirement Account' 
+              || this.electiontype.startsWith('B.')
+              || this.electiontype.startsWith('C.'))) {
+             this.showTerminationFields = false;
+             this.DeathOfParticipant= false;
+             this.showTraditionalandElectiveFields=false;
+             this.checkboxfield = false;
+             this.showFields = false;
+             this.showTransferExchangeFields = false;
+             this.loan = true;
+             console.log("this.loan", this.loan);
+
+        } 
+
+        else if (this.type === 'Death Of Participant' &&
+            (this.electiontype.startsWith('A.') //=== 'A. Vested Rollover To Traditional Retirement Account' 
+              || this.electiontype.startsWith('B.')
+              || this.electiontype.startsWith('C.'))) {
+             this.showTerminationFields = false;
+             this.DeathOfParticipant= true;
+             this.showTraditionalandElectiveFields=false;
+             this.checkboxfield = false;
+             this.showFields = false;
+             this.loan = false;
+             this.showTransferExchangeFields = false;
+             console.log("this.DeathOfParticipant", this.DeathOfParticipant);
+
+        } 
+        else if (this.type === 'Termination' &&
+            (this.electiontype.startsWith('A.') //=== 'A. Vested Rollover To Traditional Retirement Account' 
+              || this.electiontype.startsWith('B.')
+              || this.electiontype.startsWith('C.'))) {
+             this.showTerminationFields = true;
+             this.showTraditionalandElectiveFields=true;
+             this.DeathOfParticipant= false;
+             this.checkboxfield = false;
+             this.showFields = false;
+             this.loan = false;
+             this.showTransferExchangeFields = false;
+             console.log("this.showTerminationFields", this.showTerminationFields);
+
+        } 
+         else if (this.type === 'Termination' &&
+            (this.electiontype.startsWith('D.'))) { //=== 'A. Vested Rollover To Traditional Retirement Account' 
+             this.showTerminationFields = true;
+             this.showTraditionalandElectiveFields=true;
+            this.
+
+
+			= true;           
+            this.DeathOfParticipant= false;
+             this.showFields = false;
+             this.showTransferExchangeFields = false;
+             this.loan = false;
+             console.log("this.showTerminationFields", this.showTerminationFields);
+
+        } 
+
+          else if (this.type === 'Termination' &&
+            (this.electiontype.startsWith('E.') //=== 'A. Vested Rollover To Traditional Retirement Account' 
+              || this.electiontype.startsWith('F.')
+              || this.electiontype.startsWith('G.')
+              || this.electiontype.startsWith('I.'))) {             
+             this.checkboxfield = true; 
+             this.showFields = false;
+             this.DeathOfParticipant= false;
+             this.showTerminationFields = true;
+             this.showTraditionalandElectiveFields=false;
+            // this.showTerminationFields = false;
+             this.showTransferExchangeFields = false;
+             this.loan = false;
+             console.log("this.checkboxfield", this.checkboxfield);
+
+        }
+          else if (this.type === 'Transfer/Exchange: Plan-To-Plan (PTP) / Custodial' &&
+            (this.electiontype.startsWith('A.') //=== 'A. Vested Rollover To Traditional Retirement Account' 
+              || this.electiontype.startsWith('B.')
+              || this.electiontype.startsWith('C.')
+              || this.electiontype.startsWith('D.'))) {
+             this.showTransferExchangeFields = true;
+             this.DeathOfParticipant= false;
+             this.showFields = false;
+             this.checkboxfield = false;
+             this.loan = false;
+             this.showTerminationFields = false;
+             console.log("this.showTransferExchangeFields", this.showTransferExchangeFields);
+
+        }
+          else if (this.type === 'Hardship' &&
+            (this.electiontype.startsWith('A.') //=== 'A. Vested Rollover To Traditional Retirement Account' 
+              || this.electiontype.startsWith('B.')
+              || this.electiontype.startsWith('C.')
+              || this.electiontype.startsWith('D.'))) {
+             this.showTransferExchangeFields = false;
+             this.showFields = false;
+             this.checkboxfield = false;
+             this.DeathOfParticipant= false;
+             this.showTerminationFields = false;
+             this.ShowHardship = true;
+             this.loan = false;
+             console.log("this.ShowHardship", this.ShowHardship);
+
+        }
+        else {
+            this.showFields = false;
+            this.showTerminationFields = false;
+            this.checkboxfield = false;
+            this.showTransferExchangeFields = false;
+           this.ShowHardship = false; 
+           this.DeathOfParticipant= false;
+           this.loan=false;
+            console.log("this.showFields", this.showFields);
+        }
+    }
+     updateHardshipVisibility(){
+         if (this.UnChecked) {
+            this.showharship1 = true;
+            console.log("this.showharship1", this.showharship1);
+       } else {
+            this.showharship1 = false;
+            console.log("this.showharship1", this.showharship1);
+        }
+    }
+    updateTransferExchangesourceVisibility(){
+         if (this.SourceInvestmentProvider !== '') {
+            this.SourceContractNumber = true;
+            this.SourceContractDate = true;
+            console.log("this.SourceContractNumber", this.SourceContractNumber);
+            console.log("this.SourceContractDate", this.SourceContractDate);
+
+        } else {
+            this.SourceContractNumber = false;
+            this.SourceContractDate = false;
+            console.log("this.SourceContractNumber", this.SourceContractNumber);
+             console.log("this.SourceContractDate", this.SourceContractDate);
+        }
+    }
+    
+    updateCommencementdateVisibility() {
+        if (this.RMDElection === 'Deferred') {
+            this.showCommencementdate = true;
+            console.log("this.showCommencementdate", this.showCommencementdate);
+
+        } else {
+            this.showCommencementdate = false;
+            console.log("this.showCommencementdate", this.showCommencementdate);
+        }
+    }
+	
+updateGrossAmountVisibility() {
+        if (this.RMDAmount === 'Gross Amount') {
+            this.showGrossAmount = true;
+            console.log("this.showGrossAmount", this.showGrossAmount);
+
+        } else {
+            this.showGrossAmount = false;
+            console.log("this.showGrossAmount", this.showGrossAmount);
+        }
+    }
+	
+updatesourceFieldsVisibility() {
+        if (this.RMDLiquidation === 'Per Specified') {
+            this.showsourceFields = true;            
+            console.log("this.showsourceFields", this.showsourceFields);
+
+        } else {
+            this.showsourceFields = false;
+            console.log("this.showsourceFields", this.showsourceFields);
+        }
+    }
+
+updateRowVisibility(rowId) {
+    // Find the row by ID
+    const row = this.rows.find(row => row.id === rowId);    
+    if (row) {
+        // Update visibility flags based on SourceFormat
+        if (row.SourceFormat === '$') {
+            row.showAmount = true;
+            row.showPercent = false;
+        } else if (row.SourceFormat === '%') {
+            row.showPercent = true;
+            row.showAmount = false;
+        } else {
+            row.showAmount = false;
+            row.showPercent = false;
+        }
+        // Trigger re-render
+        this.rows = [...this.rows];
+    }
+}
+
+updateRowsourceVisibility(rowId) {
+    // Find the row by ID
+    const row = this.TransferSourcerows.find(row => row.id === rowId);    
+    if (row) {
+        // Update visibility flags based on SourceFormat
+        if (row.SourceFormat === '$' ) {
+            row.showAmount = true;
+            row.showPercent = false;
+
+        } else if (row.SourceFormat === '%') {
+            row.showPercent = true;
+            row.showAmount = false;
+        }  else {
+            row.showAmount = false;
+            row.showPercent = false;
+        }
+
+        //Des
+        if (row.DesFormat === '$' ) {
+            row.DesshowAmount = true;
+            row.DesshowPercent = false;
+            
+        } else if (row.DesFormat === '%') {
+            row.DesshowPercent = true;
+            row.DesshowAmount = false;
+        } else { 
+            row.DesshowAmount = false;
+            row.DesshowPercent = false;
+        }
+        // Trigger re-render
+        this.TransferSourcerows = [...this.TransferSourcerows];
+    }
+}
+
+//updateRowDesVisibility(rowId) {
+//    // Find the row by ID
+//    const row = this.TransferDesrows.find(row => row.id === rowId);    
+//    if (row) {
+//        // Update visibility flags based on SourceFormat
+//        if (row.SourceFormat === '$') {
+//            row.showAmount = true;
+//            row.showPercent = false;
+//        } else if (row.SourceFormat === '%') {
+//            row.showPercent = true;
+//            row.showAmount = false;
+//        } else {
+//            row.showAmount = false;
+//            row.showPercent = false;
+//        }
+//        // Trigger re-render
+//        this.TransferDesrows = [...this.TransferDesrows];
+//    }
+//}
+
+
+updateTerminationVisibility() {
+        if (this.TraditionalRetirement !== 'No Selection') {
+            this.showTraditionalFields = true; 
+            console.log("this.showTraditionalFields", this.showTraditionalFields);
+
+        } 
+        
+         if (this.RothElectiveDeferral !== 'No Selection') {
+            this.showElectiveFields = true; 
+            console.log("this.showElectiveFields", this.showElectiveFields);
+
+        } 
+         if (this.RothElectiveDeferral !== 'No Selection') {
+            this.showElectiveFields = true; 
+            console.log("this.showElectiveFields", this.showElectiveFields);
+
+        } 
+
+    }
+    //Destinationdate
+
+	handleSave() {
+            if (this.isTaxWithholdingChecked) {
+                        // Validate fields
+                        if (!this.FederalPercent && !this.StatePercent) {
+                            this.errorMessage = 'Please enter either Federal Percentage or State Percentage.';
+                        } else {
+                            this.errorMessage = ''; // Clear error message if validation passes
+                            // Handle form submission logic here
+                            console.log('Submitting with:', this.FederalPercent, this.StatePercent);
+                            this.handleSave1();
+                        }
+                    } else {
+                        this.errorMessage = ''; // Clear error message if checkbox is not checked
+                        // Handle form submission logic here if needed
+                        this.handleSave1();
+                    }
+
+    }
+    handleSave1() {
+        
+ if (this.loantype === 'General' && this.loanterm >= 5) {
+        this.errorMessage = 'Loan term cannot exceed 5 years for General loans.';
+        console.error(this.errorMessage);
+        return; // Prevent saving
+    }
+     // Validate loan term for "Residential" loan type
+    else if (this.loantype === 'Residential - primary' && this.loanterm >=15) {
+        this.errorMessage = 'Loan term cannot exceed 15 years for Residential loans.';
+        console.error(this.errorMessage);
+        return; // Prevent saving
+    }
+    // Clear any previous error message
+    this.errorMessage = '';
+        const fields = { Name : 'TEST', //this.name,
+                         Social_secuirty_number__c : this.socialSecurityNumber,
+                         Contact__c: this.selectedContactId,
+                         Company__c: this.selectedCompanyId,
+                         Plan__c: this.selectedPlanId,
+                         Contact1__c: this.contactName, 
+                         Company1__c: this.companyName,
+                         Plan1__c: this.planName,  
+                         First_Name__c:this.contact.FirstName,    
+                         Last_Name__c:this.contact.LastName,                         
+                         Social_secuirty_number__c:this.contact.Social_secuirty_number__c,  
+                         Birthdate__c:this.contact.Birthdate,  
+                         Date_of_Employment__c:this.contact.Date_of_Employment__c,  
+                         Date_of_Termination__c:this.contact.Date_of_Termination__c,  
+                         Email__c:this.contact.Email,  
+                         Phone__c:this.contact.Phone,  
+                         Marital_Status__c : this.contact.Marital_Status__c,	
+                            OtherStreet__c : this.contact.OtherStreet,
+                            OtherCity__c: this.contact.OtherCity,
+                            OtherState__c : this.contact.OtherState,
+                            OtherPostalCode__c : this.contact.OtherPostalCode,
+                            OtherCountry__c : this.contact.OtherCountry, 
+                         Distribution_plan_type__c :this.type,
+                         Election__c:this.electiontype,
+                         Status__c :this.status,
+                         RMD_Election__c :this.RMDElection,
+                         RMD_Amount_Election__c:this.RMDAmount,
+                         RMD_Liquidation_Election__c:this.RMDLiquidation,
+                         RMD_Commencement_Date__c:this.Commencementdate,
+                         RMD_Gross_Amount__c:this.GrossAmount,
+                         //RMD_Source_Fund__c:this.SourceFund,
+                         //RMD_Source_Format__c:this.SourceFormat,
+                         //RMD_Source_Percent__c:this.SourceAmount,
+                         //RMD_Source_Amount__c:this.SourcePercent,
+                         Traditional_Retirement_Account__c:this.TraditionalRetirement,
+                         Traditional_IRA_Plan_Name__c: this.TradIRAPlan,               
+                         Traditional_Account_Number__c:this.TradAccount,
+                         Traditional_Account_Delivery_Address__c:this.TradAccountDeliveryAddr,
+                         Roth_Elective_Deferral_Account__c:this.RothElectiveDeferral,
+                         Roth_Elective_IRA_Plan_Name__c :this.ElectiveIRAPlan,
+                         Roth_Elective_Account_Number__c:this.ElectiveAccount, 
+                         Roth_Elective_Account_Delivery_Address__c:this.ElectiveAccountDeliveryAddr,
+                         Additional_State_Percentage__c:this.StatePercent,
+                         Additional_Federal_Percentage__c: this.FederalPercent, 
+                        Transfer_Exchange_Tranaction_Type__c:this.TransferExchange1,
+                        Transfer_Exchange_Transaction_Extent__c:this.TransferExchange2,
+                        Transfer_Exchange_Assets_In_Kind_Flag__c:this.TransferExchange3,
+                        //Source_Investment_Provider__c  :this.TransferExchange4, 
+                        //Source_Contract_Number__c:this.sourcenumber,
+                        //Source_Contract_Date__c:this.sourcedate,
+                        //Destination_Investment_Provider__c :this.TransferExchange5, 
+                        //Destination_Contract_Date__c:this.Destinationdate,
+                        //Destination_Contract_Number__c:this.Destinationnumber,
+                        Unreimbursed_Medical_Amount__c:this.MedicalAmount,
+                        Residence_Purchase_Amount__c:this.ResidenceAmount,
+                        Education_Amount__c:this.EducationAmount,
+                        Residence_Foreclosure_Eviction_Amount__c:this.ForeclosureAmount,
+                        Residence_Casualty_Repair_Amount__c:this.RepairAmount,
+                        Funeral_Amount__c:this.FuneralAmount,
+                        Beneficiary_Rollover_To_Inherited_IRA__c:this.DeathofparticipantType,
+                       Loan_Type__c:this.loantype,
+                        Loan_Term__c:this.loanterm,
+                        Loan_Amount__c:this.loanamt
+   };
+
+        const recordInput = { apiName: DISTRIBUTION_OBJECT.objectApiName, fields };
+        createRecord(recordInput)
+            .then((record) => {
+                this.newrecordId = record.id;
+                //this.navigateToRecordPage(this.newrecordId);
+                // Below if for RMD source
+                 if (this.showsourceFields) {
+                      console.log("this.showsourceFields", this.showsourceFields);
+                     this.electionInsert();
+                 }
+                 // Below if for Transfer source
+                 if (this.showTransferExchangeFields) {
+                    console.log("this.showTransferExchangeFields", this.showTransferExchangeFields);
+                     this.electionInsert();
+                 }
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Record saved successfully',
+                        variant: 'success'
+                    })
+                );
+                this.clearFields();
+                console.log("before",this.newrecordId );                
+                this.navigateToRecordPage(this.newrecordId);
+                console.log("After",this.newrecordId );                     
+            })
+            .catch(error => {
+                   console.error('Full error object:', error);
+                 //const errorMessage = error.body?.message || 'Unknown error occurred';
+                 this.message = undefined;
+                 this.error = error;
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error creating record',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
+                 console.log("error", JSON.stringify(this.error));
+            });
+    }
+   
+   navigateToRecordPage(recordId) {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: recordId,
+                objectApiName: DISTRIBUTION_OBJECT.objectApiName,
+                actionName: 'view'
+            }
+        });
+    }
+
+    handleCancel() {
+        this.clearFields();
+    }
+
+    clearFields() {
+        //this.name = '';
+        this.socialSecurityNumber = '';
+        this.selectedContactId = null;
+        this.selectedCompanyId = null;
+        this.selectedPlanId = null;
+        this.contactName = '';
+        this.companyName = '';
+        this.planName = '';
+        this.type = '';
+        this.electiontype='';
+        this.Elect='';
+        this.status = '';
+        this.companyOptions = [];
+        this.plans = [];
+        this.contact= []; 
+        this.RMDElection ='';
+	    this.Commencementdate = '';        
+		this.RMDAmount ='';
+		this.GrossAmount = '';		
+		this.RMDLiquidation ='';
+        //this.SourceFund= '';
+        //this.SourceFormat = '';
+        //this.SourceAmount = '';
+        //this.SourcePercent = ''; 
+        this.TraditionalRetirement ='No Selection';
+        this.TransferExchange='';
+        this.TradIRAPlan ='';     
+        this.TradAccount ='';
+        this.TradAccountDeliveryAddr ='';
+        this.RothElectiveDeferral ='No Selection';
+        this.ElectiveIRAPlan ='';
+        this.ElectiveAccount ='';
+        this.ElectiveAccountDeliveryAddr ='';
+        this.showTraditionalFields =false;
+      
+        this.showCommencementdate =false;
+        this.showGrossAmount =false;
+        this.showsourceFields =false;
+        this.showAmount = false;
+        this.showPercent = false;
+        this.showTerminationFields =false;
+        this.DeathOfParticipant= false;
+      this.checkboxfield =false;
+         this.showTransferExchangeFields = false;
+         this.ShowHardship = false;
+         this.ShowHardship1= false;
+         this.loantype;
+this.loanterm;
+this.loanamt; 
+    }
+clearRMDFields() {
+        this.Commencementdate = '';
+        this.GrossAmount = '';
+        //this.SourceFund= '';
+        //this.SourceFormat = '';
+        //this.SourceAmount = '';
+        //this.SourcePercent = '';
+        this.showCommencementdate =false;
+        this.showGrossAmount =false;
+        this.showsourceFields =false;
+        this.showAmount = false;
+        this.showPercent = false;
+}
+
+clearTerminationFields() { 
+this.TraditionalRetirement ='No Selection';
+this.TransferExchange='';
+this.TradIRAPlan ='';     
+this.TradAccount ='';
+this.TradAccountDeliveryAddr ='';
+this.RothElectiveDeferral ='No Selection';
+this.ElectiveIRAPlan ='';
+this.ElectiveAccount ='';
+this.ElectiveAccountDeliveryAddr ='';
+this.showTraditionalFields =false;
+this.showElectiveFields =false;
+
+}  
+
+clearhardshipFields() { 
+this.ShowHardship =false;
+}  
+
+clearloanFields(){
+this.loantype='';
+this.loanterm='';
+this.loanamt=''; 
+}
+
+
+  handleContactChange(event) {
+       this.contactName ='';
+       this.selectedContactId = event.detail.value;
+         try {
+                        this.selectedContactId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedcontact = this.contactOptions.find(contact => contact.value === this.selectedContactId);
+
+                        if (selectedcontact) {
+                            this.contactName = selectedcontact.label;
+                            console.log("Selected contact Name:", this.contactName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedContactId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling contact change:", error);
+                    } 
+       this.contact= []; 
+       this.selectedCompanyId = null;
+       this.selectedPlanId = null;
+       this.companyOptions = [];
+       this.companyName = '';
+       this.planName = '';
+       this.plans = [];  
+       this.searchName ='';
+       this.selectedContactName = '';
+       //this.contactName ='';
+       this.accountId = null;
+        
+       this.loadCompanies(); 
+       this.recordId = this.selectedContactId;
+       
+        console.log("selectedContactId", this.selectedContactId);
+       console.log("selectedrecordId", this.recordId);
+       //this.selectedContactname = event.detail.label;
+       //this.disableSave = !this.selectedContactId;
+
+       //console.log("selectedContactId", this.selectedContactId);
+       //console.log("selectedContactnamet", this.selectedContactname);
+   }
+
+    handleCompanyChange(event) {
+        this.selectedCompanyId = event.detail.value; 
+         try {
+                        this.selectedCompanyId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedcompany = this.companyOptions.find(company => company.value === this.selectedCompanyId);
+
+                        if (selectedcompany) {
+                            this.companyName = selectedcompany.label;
+                            //this.recordId = selectedCompany.contactId;
+                            console.log("Selected Company Name:", this.companyName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedCompanyId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling Company change:", error);
+                    }
+                 this.accountId  = this.selectedCompanyId 
+                   console.log("accountId", this.accountId);
+        this.loadPlans();
+    }
+
+   handlePlanChange(event) {
+        this.selectedPlanId = event.detail.value;   
+                try {
+                        this.selectedPlanId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedPlan = this.plans.find(plan => plan.value === this.selectedPlanId);
+
+                        if (selectedPlan) {
+                            this.planName = selectedPlan.label;
+                            console.log("Selected Plan Name:", this.planName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedPlanId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling plan change:", error);
+                    }
+     //console.log("selectedPlanId", this.selectedPlanId);
+     this.planId = event.detail.value;
+       this.type ='';
+       this.electiontype ='';
+       this.status ='';
+    }
+
+
+   loadPlans() {
+    getPlansByCompany({ companyId: this.selectedCompanyId })
+        .then(result => {
+            this.plans = result.map(plan => ({
+                label: plan.Name, 
+                value: plan.Id
+            }));
+        })
+        .catch(error => {
+            console.error('Error fetching plans:', error);
+        });
+}
+
+   loadCompanies() {
+    console.log('Loading companies for contactId:', this.selectedContactId, 'and contactName:', this.selectedContactName);
+    
+    const params = {};
+    
+    if (this.selectedContactId) {
+        params.contactId = this.selectedContactId;
+    }
+    
+    if (this.selectedContactName) {
+        params.contactName = this.selectedContactName;
+    }
+
+    getCompaniesByContact(params)
+        .then(result => {
+            this.companyOptions = result.map(company => ({
+                label: company.Name,
+                value: company.Id
+                //contactId: company.ContactId
+            }));
+            console.log('Company options:', this.companyOptions);
+        })
+        .catch(error => {
+            console.error('Error fetching companies:', error);
+        });
+}
+
+   @wire(getContactsBySSN, { ssn: '$socialSecurityNumber' })
+   wiredContacts({ error, data }) {
+       if (data) {          
+           this.contactOptions = data.map(contact => ({
+               label: contact.Name,
+               value: contact.Id
+           }));
+           //this.disableContactDropdown = false;
+       } else if (error) {
+           // Handle error
+           console.error('Error fetching contacts:', error);
+       }
+   }
+   // Wire the Apex methods to retrieve picklist values
+    @wire(getTypePicklistValues,{ planId: '$planId' })
+    wiredTypeOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.typeOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching type picklist values:', error);
+        }
+    }
+     
+  @wire(getElectionPicklistValues,{ planId: '$planId' })
+    wiredElectionOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.ElectionOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching type picklist values:', error);
+        }
+    }
+    @wire(getStatusPicklistValues)
+    wiredStatusOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.statusOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching status picklist values:', error);
+        }
+    }
+ @wire(getRMDElectionPicklistValues)
+    wiredRMDElectionOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.RMDElectionOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching type picklist values:', error);
+        }
+    }
+    @wire(getRMDAmountPicklistValues)
+    wiredRMDAmountOptions({ error, data }) {
+        if (data) {
+            this.RMDAmountOptions = data.map(item => ({ label: item, value: item }));
+        } else if (error) {
+            console.error('Error fetching RMD amount picklist values:', error);
+        }
+    }
+     @wire(getRMDLiquidationPicklistValues)
+    wiredRMDLiquidationOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.RMDLiquidationOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching type picklist values:', error);
+        }
+    }
+//@wire(getRMDSourceFundPicklistValues)
+//    wiredRMDSourceFundOptions({ error, data }) {
+//        if (data) {
+//            // Map the picklist values to match the structure required by lightning-combobox
+//            this.RMDSourceFundOptions= data.map(item => {
+//                return { label: item, value: item };
+//            });
+//        } else if (error) {
+//            console.error('Error fetching type picklist values:', error);
+//        }
+//    }
+
+@wire(getRMDSourceFundPicklistValues, { objectApiName: 'Account', fieldApiName: 'Vendor__c' })
+    wiredRMDSourceFundOptions({ error, data }) {
+        if (data) {
+            this.RMDSourceFundOptions = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+
+@wire(getRMDSourceFundPicklistValues, { objectApiName: 'Distribution__c', fieldApiName: 'Traditional_Retirement_Account__c' })
+    wiredTraditionalRetirementOptions({ error, data }) {
+        if (data) {
+            this.TraditionalRetirementOptions = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+
+ @wire(getRMDSourceFundPicklistValues, { objectApiName: 'Distribution__c', fieldApiName: 'Roth_Elective_Deferral_Account__c' })
+    wiredRothElectiveDeferralOptions({ error, data }) {
+        if (data) {
+            this.RothElectiveDeferralOptions = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }   
+
+  @wire(getRMDSourceFormatPicklistValues)
+    wiredRMDSourceFormatOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.RMDSourceFormatOptions= data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching type picklist values:', error);
+        }
+    }
+    @wire(getRMDSourceFundPicklistValues, { objectApiName: 'Distribution__c', fieldApiName: 'Transfer_Exchange_Tranaction_Type__c' })
+    wiredTransferExchangeOptions1({ error, data }) {
+        if (data) {
+            this.TransferExchangeOptions1 = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+     @wire(getRMDSourceFundPicklistValues, { objectApiName: 'Distribution__c', fieldApiName: 'Transfer_Exchange_Transaction_Extent__c' })
+    wiredTransferExchangeOptions2({ error, data }) {
+        if (data) {
+            this.TransferExchangeOptions2 = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+     @wire(getRMDSourceFundPicklistValues, { objectApiName: 'Distribution__c', fieldApiName: 'Transfer_Exchange_Assets_In_Kind_Flag__c' })
+    wiredTransferExchangeOptions3({ error, data }) {
+        if (data) {
+            this.TransferExchangeOptions3 = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+      @wire(getRMDSourceFundPicklistValues, { objectApiName: 'Account', fieldApiName: 'Vendor__c' })
+    wiredTransferExchangeOptions4({ error, data }) {
+        if (data) {
+            this.TransferExchangeOptions4 = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+     @wire(getRMDSourceFundPicklistValues, { objectApiName: 'Account', fieldApiName: 'Vendor__c' })
+    wiredTransferExchangeOptions5({ error, data }) {
+        if (data) {
+            this.TransferExchangeOptions5 = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+      @wire(getRMDSourceFundPicklistValues, { objectApiName: 'Distribution__c', fieldApiName: 'Beneficiary_Rollover_To_Inherited_IRA__c' })
+    wiredDeathofparticipantOptions({ error, data }) {
+        if (data) {
+            this.DeathofparticipantOptions = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+     @wire(getRMDSourceFundPicklistValues, { objectApiName: 'Distribution__c', fieldApiName: 'Loan_Type__c' })
+    wiredloanOptions({ error, data }) {
+        if (data) {
+            this.loanOptions = data.map(option => ({
+                label: option.label,
+                value: option.value
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values', error);
+        }
+    }
+
+    //New Code added for search
+                handleContactNameChange(event) {
+                    this.contactName = event.target.value;
+                    if (this.contactName.length > 1) {
+                        this.searchContacts();
+                    } else {
+                        this.suggestions = [];
+                    } 
+       this.contact= []; 
+       this.selectedCompanyId = null;
+       this.selectedPlanId = null;
+       this.companyOptions = [];
+       this.companyName = '';
+       this.planName = '';
+       this.plans = [];  
+       this.searchName='';
+       this.accountId = null;
+                }
+
+                handleKeyUp(event) {
+                    if (event.key === 'Enter') {
+                        this.validateContactName();
+                    }
+                }
+
+                searchContacts() {
+                    searchContacts({ searchKey: this.contactName })
+                        .then(result => {
+                            this.suggestions = result;
+                            this.showError = false;
+                        })
+                        .catch(error => {
+                            this.suggestions = [];
+                            this.showError = true;
+                            this.errorMessage = 'Error retrieving contacts.';
+                            console.error('Error:', error);
+                        });
+                }
+
+                handleSuggestionClick(event) {
+                    //this.selectedContactId = event.currentTarget.dataset.id;
+                    //console.log("Search based selectedContactId", this.selectedContactId);
+                    const selectedContactId = event.currentTarget.dataset.id;
+                    const selectedContact = this.suggestions.find(contact => contact.Id === selectedContactId);
+                    if (selectedContact) {
+                        this.contactName = selectedContact.Name;
+                        this.suggestions = [];
+                        this.showError = false;
+                    }
+
+                this.selectedContactName =this.contactName
+                console.log("this.selectedContactName", this.selectedContactName);
+                this.searchName = this.selectedContactName;
+                console.log("this.searchName", this.searchName);
+                this.loadCompanies(); 
+                this.selectedContactId = event.currentTarget.dataset.id;
+                this.recordId = this.selectedContactId; 
+                }
+
+                validateContactName() {
+                    // Validate if the entered contact name is in the list of suggestions
+                    const isValid = this.suggestions.some(contact => contact.Name === this.contactName);
+                    if (isValid) {
+                        this.showError = false;
+                    } else {
+                        this.showError = true;
+                        this.errorMessage = 'Contact not found.';
+                    }
+                }
+    //New Code added for search
+   
+}
+
+Install Salesforce Add-ins:
+
+For Outlook: Install the Salesforce for Outlook or Salesforce Lightning for Outlook add-in from the Microsoft Store. This allows you to log emails directly from your Outlook client.
+For Gmail: Install the Salesforce Lightning for Gmail add-on from the Google Workspace Marketplace.
+
+
+
+Current DIstribution flow in Penserv:
+
+Distribution forms comes to penserv eithey mail fax email 
+
+once recived it will be scanned by email outlook scanner after that the new distribution record gets created in dynamics with some fields captured from the form lik efirstname and last name 
+ssn and address  once record created in dynamics our processing team willstart working on it. 
+
+two diffent ways we handle distribution
+
+
+one is we will validate and provide approval notice as we are not custodians 
+they wil validate the particpant 
+in case if ssn they doesnot mention in the form then our proceesing unit team will find from relius and update in distribution record.if some otehr information they were not able to verify them processing unit will reach to CSR 
+so CSR will conatct to particpant or employer based on information they need and provide to processing team so then 
+processing unit will verify the participant and validate their  distribution request.is they are applicatable for the requested distribution they they will release approval notice to Vendors and clos the distribution record status as compelleted.
+
+
+send one is we are custodian for participants or employess then our processing unit team will validate record and assign to respective team and those teams wil work on distribution and take acre of all activities and 
+will complete the distribution
+
+
+high vloume of chat--einsten reply recommendation
+when chat is initaited--einstein service replies
+call insight-post call
+call explorer-tool that can analyze voice and video call records
+call suamry -busy
+mature salesforce org-service Ai grounding
+einsten service replies for email--offers personlized service exp
+
+data sciece -model builder-------hotel- prompt builder
+
+
+A. Service Replies and Case Summaries
+. Einstein Work Summaries----->increased number of support cases
+
+
+record summary
+On the Oracle side, you need to:
+
+Install Oracle REST Data Services (ORD) if not already installed.
+Expose data from Oracle by either directly exposing tables/views or writing PL/SQL procedures/functions and mapping them to RESTful APIs.
+Secure the API with basic authentication or OAuth.
+Test the REST API using a REST client.
+Provide access to Salesforce through a remote site and consume the API in Salesforce via Apex.
+By following these steps, you can expose your Oracle database data as RESTful APIs, and Salesforce can retrieve and display this data without middleware.
+
+https://trailhead.salesforce.com/content/learn/projects/set-up-salesforce-knowledge/set-access-for-lightning-knowledge

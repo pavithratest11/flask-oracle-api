@@ -1,0 +1,34 @@
+
+            <lightning-combobox label="Plan Type" value={planType} options={planOptions} onchange={handlePlanTypeChange}></lightning-combobox>
+js:
+import { LightningElement, track,wire } from 'lwc';
+import getPicklistValues from '@salesforce/apex/ObjectNameController.getPicklistValues';
+
+ @track planType = ''; 
+     @track planOptions = [];
+
+    @wire(getPicklistValues)
+    wiredPicklistValues({ error, data }) {
+        if (data) {
+            this.planOptions = data.map(option => ({
+                label: option,
+                value: option
+            }));
+        } else if (error) {
+            console.error('Error fetching picklist values: ', error);
+        }
+    }
+class:
+// ObjectNameController.cls
+public with sharing class ObjectNameController {
+    @AuraEnabled(cacheable=true)
+    public static List<String> getPicklistValues() {
+        Schema.DescribeFieldResult fieldResult = contact.Plan_Type__c.getDescribe();
+        List<Schema.PicklistEntry> picklistValues = fieldResult.getPicklistValues();
+        List<String> options = new List<String>();
+        for(Schema.PicklistEntry entry : picklistValues) {
+            options.add(entry.getLabel());
+        }
+        return options;
+    }
+}

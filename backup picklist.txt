@@ -1,0 +1,217 @@
+<template>
+    <lightning-card title="New Distribution Record">
+        <div class="slds-grid slds-wrap slds-gutters">
+            <!-- Left Column -->
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-p-around_medium">
+                    <lightning-input label="Name" value={name} onchange={handleNameChange}></lightning-input>
+                    <lightning-input label="Social Security Number" value={socialSecurityNumber} onchange={handleSSNChange}></lightning-input>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-p-around_medium">
+                    <lightning-record-edit-form object-api-name="Distribution__c">
+                        <lightning-messages></lightning-messages>
+
+                        <!-- Company (Account) Lookup Field -->
+                        <lightning-input-field field-name="Company__c" onchange={handleCompanyChange}></lightning-input-field>
+
+                        <!-- Plan Lookup Field -->
+                        <lightning-input-field field-name="Plan__c" onchange={handleplanChange}></lightning-input-field>
+
+                        <!-- Contact Lookup Field -->
+                        <lightning-input-field field-name="Contact__c" onchange={handleContactChange}></lightning-input-field>
+
+                        <lightning-combobox
+                            label="Type"
+                            value={type}
+                            options={typeOptions}
+                            onchange={handleTypeChange}>
+                        </lightning-combobox>
+
+                        <lightning-combobox
+                            label="Status"
+                            value={status}
+                            options={statusOptions}
+                            onchange={handleStatusChange}>
+                        </lightning-combobox>
+
+                        <lightning-button label="Save" onclick={handleSave}></lightning-button>
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>
+
+////////////
+
+import { LightningElement, track, wire } from 'lwc';
+import { createRecord } from 'lightning/uiRecordApi';
+import getTypePicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getTypePicklistValues';
+import getStatusPicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getStatusPicklistValues';
+import getContactsForAccount from '@salesforce/apex/DistributionPicklistValuesController.getContactsForAccount';
+
+export default class NewDistributionRecord extends LightningElement {
+    @track name;
+    @track socialSecurityNumber;
+    @track type;
+    @track status;
+    @track contactId;
+    @track accountId;
+    @track contactOptions = [];
+
+    typeOptions = [];
+    statusOptions = [];
+
+    // Wire the Apex methods to retrieve picklist values
+    @wire(getTypePicklistValues)
+    wiredTypeOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.typeOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching type picklist values:', error);
+        }
+    }
+
+    @wire(getStatusPicklistValues)
+    wiredStatusOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.statusOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching status picklist values:', error);
+        }
+    }
+
+    // Event handler for Name change
+    handleNameChange(event) {
+        this.name = event.target.value;
+    }
+
+    // Event handler for Social Security Number change
+    handleSSNChange(event) {
+        this.socialSecurityNumber = event.target.value;
+    }
+
+    // Event handler for Type change
+    handleTypeChange(event) {
+        this.type = event.detail.value;
+    }
+
+    // Event handler for Status change
+    handleStatusChange(event) {
+        this.status = event.detail.value;
+    }
+
+    // Event handler for Contact lookup change
+    handleContactChange(event) {
+        this.contactId = event.detail.value;
+    }
+
+ handleplanChange(event) {
+        this.contactId = event.detail.value;
+    }
+    // Event handler for Company (Account) lookup change
+    handleCompanyChange(event) {
+        this.accountId = event.detail.value;
+        // Call Apex method to fetch related contacts for the selected account
+        getContactsForAccount({ accountId: this.accountId })
+            .then(result => {
+                this.contactOptions = result.map(contact => {
+                    return { label: contact.Name, value: contact.Id };
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching contacts for account:', error);
+            });
+    }
+
+    // Event handler for Save button click
+    handleSave() {
+        // Validate required fields before saving
+        if (!this.name || !this.socialSecurityNumber || !this.type || !this.status || !this.contactId || !this.accountId) {
+            // Handle validation error, e.g., show error message to user
+            console.error('Please fill in all required fields.');
+            return;
+        }
+
+        // Prepare fields for record creation
+        const fields = {
+            Name: this.name,
+            Social_Security_Number__c: this.socialSecurityNumber,
+            Type__c: this.type,
+            Status__c: this.status,
+            Plan__c: this.planId,
+            Contact__c: this.contactId,
+            Company__c: this.accountId
+            // Add more fields as needed for your Distribution__c object
+        };
+
+        // Create a new Distribution record using UI API
+        createRecord({ apiName: 'Distribution__c', fields })
+            .then(result => {
+                // Clear input fields after successful save
+                this.name = '';
+                this.socialSecurityNumber = '';
+                this.type = '';
+                this.status = '';
+                this.contactId = '';
+                this.accountId = '';
+                console.log('Distribution record created:', result.id);
+                // Optionally, dispatch custom event or handle success message
+            })
+            .catch(error => {
+                console.error('Error creating Distribution record:', error);
+                // Handle error, e.g., show error message to user
+            });
+    }
+}
+
+////////
+
+public with sharing class DistributionPicklistValuesController {
+    
+    @AuraEnabled(cacheable=true)
+    public static List<String> getTypePicklistValues() {
+        List<String> options = new List<String>();
+        
+        Schema.DescribeFieldResult fieldResult = Distribution__c.Type__c.getDescribe();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+        
+        for (Schema.PicklistEntry f : ple) {
+            options.add(f.getLabel());
+        }
+        
+        return options;
+    }
+    
+    @AuraEnabled(cacheable=true)
+    public static List<String> getStatusPicklistValues() {
+        List<String> options = new List<String>();
+        
+        Schema.DescribeFieldResult fieldResult = Distribution__c.Status__c.getDescribe();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+        
+        for (Schema.PicklistEntry f : ple) {
+            options.add(f.getLabel());
+        }
+        
+        return options;
+    }
+    
+    @AuraEnabled(cacheable=true)
+    public static List<Contact> getContactsForAccount(Id accountId) {
+        return [SELECT Id, Name FROM Contact WHERE AccountId = :accountId];
+    }
+    
+    // Add more methods as needed for your specific requirements
+    
+}

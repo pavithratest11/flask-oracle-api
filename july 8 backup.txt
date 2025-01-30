@@ -1,0 +1,424 @@
+<!-- distributionForm.html -->
+<template>
+    <lightning-card title="Distribution Record">
+        <div class="slds-grid slds-wrap slds-gutters">
+        <!-- Left Column -->
+        <div class="slds-col slds-size_1-of-2">
+        <div class="slds-p-around_medium">
+            <lightning-input label="Name" value={name} onchange={handleNameChange}></lightning-input>
+            <lightning-input label="Social Security Number" value={socialSecurityNumber} onchange={handleSSNChange}></lightning-input>
+            <lightning-combobox label="Contact" options={contactOptions} onchange={handleContactChange}></lightning-combobox>   
+            <lightning-combobox label="Company" options={companyOptions} onchange={handleCompanyChange} disabled={disableCompanyDropdown}></lightning-combobox>
+            <lightning-combobox label="Plan" options={plans} onchange={handlePlanChange}></lightning-combobox></br>            
+            <lightning-input label="First Name" value={contact.FirstName} readonly></lightning-input>
+            <lightning-input label="Last Name" value={contact.LastName} readonly></lightning-input>
+            <lightning-input label="Middle Name" value={contact.MiddleName} readonly></lightning-input>
+            <lightning-input label="Suffix" value={contact.Suffix} readonly></lightning-input>
+            <lightning-input label="SSN" value={contact.Social_secuirty_number__c} readonly></lightning-input>
+            <lightning-input label="Birth Date" value={contact.Birthdate} readonly></lightning-input>
+            <lightning-input label="Date of Employment" value={contact.Date_of_Employment__c} readonly></lightning-input>
+            <lightning-input label="Date of Termination" value={contact.Date_of_Termination__c} readonly></lightning-input>
+            <lightning-input label="Email" value={contact.Email} readonly></lightning-input>
+            <lightning-input label="Phone" value={contact.Phone} readonly></lightning-input>
+            <lightning-input label="Marital Status" value={contact.Marital_Status__c} readonly></lightning-input>
+            <lightning-input label="Other Address" value={contact.otherAddress} readonly></lightning-input>
+            <!--<lightning-input label="Street " value={contact.OtherStreet} readonly></lightning-input>-->
+            <!--<lightning-input label="City" value={contact.OtherCity} readonly></lightning-input>-->
+            <!--<lightning-input label="State" value={contact.OtherState} readonly></lightning-input>-->
+            <!--<lightning-input label="PostalCode" value={contact.OtherPostalCode} readonly></lightning-input>-->
+            <!--<lightning-input label="Country" value={contact.OtherCountry} readonly></lightning-input>-->
+            <lightning-button label="Save" onclick={handleSave}></lightning-button>
+            <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+
+            </div>
+            </div>
+         <!-- Right Column -->
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-p-around_medium">
+                     <lightning-combobox label="Type" value={type}  options={typeOptions} onchange={handleTypeChange}> </lightning-combobox>
+                     <lightning-combobox label="Status" value={status} options={statusOptions} onchange={handleStatusChange}></lightning-combobox>
+                 </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>
+Subject: Urgent: Issue with Field Read-Only Access on Contact Object
+
+Hello Salesforce Support Team,
+
+I hope this message finds you well. We are currently experiencing an issue where a field (Custom_Text_Field__c) on the Contact object is editable by users who should only have read-only access to it. Here are the details:
+
+Problem Description: Despite verified configurations (profiles, record types, and FLS settings), the Custom_Text_Field__c remains editable instead of read-only.
+Steps Taken:
+Verified field-level security settings for all affected profiles and permission sets.
+Checked record type assignments and page layout configurations.
+Cleared browser cache and tested in incognito mode.
+DistributionPicklistValuesController   @AuraEnabled(cacheable=true)
+    public static List<String> getTypePicklistValues() {
+        List<String> options = new List<String>();
+        
+        Schema.DescribeFieldResult fieldResult = Distribution__c.Type__c.getDescribe();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+        
+        for (Schema.PicklistEntry f : ple) {
+            options.add(f.getLabel());
+        }
+        
+        return options;
+    }
+import { LightningElement,api, track,wire } from 'lwc';
+import { createRecord } from 'lightning/uiRecordApi';
+import { getRecord } from 'lightning/uiRecordApi';
+import DISTRIBUTION_OBJECT from '@salesforce/schema/Distribution__c';
+import CONTACT_OBJECT from '@salesforce/schema/Contact';
+//import NAME_FIELD from '@salesforce/schema/Distribution__c.Name';
+import getContactsBySSN from '@salesforce/apex/DistssnController.getContactsBySSN';
+import getCompaniesByContact from '@salesforce/apex/DistssnController.getCompaniesByContact';
+import getPlansByCompany from '@salesforce/apex/DistssnController.getPlansByCompany';
+import getTypePicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getTypePicklistValues';
+import getStatusPicklistValues from '@salesforce/apex/DistributionPicklistValuesController.getStatusPicklistValues';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'; 
+ const FIELDS =[
+'Contact.FirstName',
+'Contact.LastName',
+'Contact.MiddleName',
+'Contact.Suffix',
+'Contact.Social_secuirty_number__c',
+'Contact.Birthdate',
+'Contact.Date_of_Employment__c',
+'Contact.Date_of_Termination__c',
+'Contact.Email',
+'Contact.Phone',
+'contact.Marital_Status__c',	
+'contact.OtherStreet',
+'contact.OtherCity',
+'contact.OtherState',
+'contact.OtherPostalCode',
+'contact.OtherCountry']
+
+export default class DistributionForm extends LightningElement {
+    @track error = '';
+    @track name;
+    @track socialSecurityNumber =null;
+    @track contactOptions = [];
+    @track companyOptions = [];
+    selectedContactId;
+    //selectedCompanyId;
+    //selectedCompanyId;
+    //selectedCompanyId;
+    //selectedCompanyId;
+    //selectedCompanyId;
+    //selectedCompanyId;
+    //selectedCompanyId;
+    //selectedContactname;
+//selectedContactname;
+    @track selectedCompanyId;
+    @track selectedPlanId;
+    @track planName; 
+    @track companyName;
+    @track contactName;
+    @track type;
+    @track status;
+    typeOptions = [];
+    statusOptions = [];
+    plans = [];
+    
+    @api recordId;
+    contact= {};
+   
+   @wire(getRecord, { recordId: '$recordId', fields: FIELDS   })
+   wiredContact({ error, data }) {
+       if (data) {
+           this.contact = { 
+               FirstName: data.fields.FirstName ? data.fields.FirstName.value : '',
+               LastName: data.fields.LastName ? data.fields.LastName.value : '',
+               MiddleName: data.fields.MiddleName ? data.fields.MiddleName.value : '',
+               Suffix: data.fields.Suffix ? data.fields.Suffix.value : '',
+               Social_secuirty_number__c: data.fields.Social_secuirty_number__c ? data.fields.Social_secuirty_number__c.value : '',
+               Birthdate: data.fields.Birthdate ? data.fields.Birthdate.value : '',
+               Date_of_Employment__c: data.fields.Date_of_Employment__c ? data.fields.Date_of_Employment__c.value : '',
+               Date_of_Termination__c: data.fields.Date_of_Termination__c ? data.fields.Date_of_Termination__c.value : '',
+               Email: data.fields.Email ? data.fields.Email.value : '',
+               Phone: data.fields.Phone ? data.fields.Phone.value : '', 
+               Marital_Status__c: data.fields.Marital_Status__c ? data.fields.Marital_Status__c.value : '',  
+               OtherStreet: data.fields.OtherStreet ? data.fields.OtherStreet.value : '',  
+               OtherCity: data.fields.OtherCity ? data.fields.OtherCity.value : '',  
+               OtherState: data.fields.OtherState ? data.fields.OtherState.value : '',  
+               OtherPostalCode: data.fields.OtherPostalCode ? data.fields.OtherPostalCode.value : '',  
+               OtherCountry: data.fields.OtherCountry ? data.fields.OtherCountry.value : ''               
+// Add more fields similarly
+           };
+
+           // Concatenate other address fields into a single formatted string
+            let otherAddress = '';
+            if (data.fields.OtherStreet.value) {
+                otherAddress += data.fields.OtherStreet.value + ', ';
+            }
+            if (data.fields.OtherCity.value) {
+                otherAddress += data.fields.OtherCity.value + ', ';
+            }
+            if (data.fields.OtherState.value) {
+                otherAddress += data.fields.OtherState.value + ' ';
+            }
+            if (data.fields.OtherPostalCode.value) {
+                otherAddress += data.fields.OtherPostalCode.value + ', ';
+            }
+            if (data.fields.OtherCountry.value) {
+                otherAddress += data.fields.OtherCountry.value;
+            }
+            // Remove trailing comma and space if present
+            otherAddress = otherAddress.trim().replace(/,\s*$/, '');
+
+            this.contact.otherAddress = otherAddress;
+
+       } else if (error) {
+           console.error('Error loading contact', JSON.stringify(error));
+       }
+   }
+
+
+    handleNameChange(event) {
+        this.name = event.target.value;
+    }
+
+    handleSSNChange(event) {
+        this.socialSecurityNumber = event.target.value;
+        console.log("socialSecurityNumber", this.socialSecurityNumber);
+        //this.clearFields1();
+       this.selectedContactId = null; 
+       this.selectedCompanyId = null;
+       this.selectedPlanId = null;
+       this.companyOptions = [];
+       this.companyName = '';
+       this.planName = '';
+       this.plans = [];  
+       this.contact= []; 
+    }
+     // Event handler for Type change
+    handleTypeChange(event) {
+        this.type = event.detail.value;
+    }
+
+    // Event handler for Status change
+    handleStatusChange(event) {
+        this.status = event.detail.value;
+    }
+
+    handleSave() {
+        const fields = { Name : this.name,
+                         Social_secuirty_number__c : this.socialSecurityNumber,
+                         Contact__c: this.selectedContactId,
+                         Company__c: this.selectedCompanyId,
+                         Plan__c: this.selectedPlanId,
+                         Contact1__c: this.contactName, 
+                         Company1__c: this.companyName,
+                         Plan1__c: this.planName,  
+                         First_Name__c:this.contact.FirstName,    
+                         Last_Name__c:this.contact.LastName,                         
+                         Social_secuirty_number__c:this.contact.Social_secuirty_number__c,  
+                         Birthdate__c:this.contact.Birthdate,  
+                         Date_of_Employment__c:this.contact.Date_of_Employment__c,  
+                         Date_of_Termination__c:this.contact.Date_of_Termination__c,  
+                         Email__c:this.contact.Email,  
+                         Phone__c:this.contact.Phone,  
+                         Marital_Status__c : this.contact.Marital_Status__c,	
+                            OtherStreet__c : this.contact.OtherStreet,
+                            OtherCity__c: this.contact.OtherCity,
+                            OtherState__c : this.contact.OtherState,
+                            OtherPostalCode__c : this.contact.OtherPostalCode,
+                            OtherCountry__c : this.contact.OtherCountry, 
+                         Type__c :this.type,
+                         Status__c :this.status                  
+                         };
+
+        const recordInput = { apiName: DISTRIBUTION_OBJECT.objectApiName, fields };
+        createRecord(recordInput)
+            .then(() => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Record saved successfully',
+                        variant: 'success'
+                    })
+                );
+                this.clearFields();
+            })
+            .catch(error => {
+                 this.message = undefined;
+                 this.error = error;
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error creating record',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
+                 console.log("error", JSON.stringify(this.error));
+            });
+    }
+    handleCancel() {
+        this.clearFields();
+    }
+
+    clearFields() {
+        this.name = '';
+        this.socialSecurityNumber = '';
+        this.selectedContactId = null;
+        this.selectedCompanyId = null;
+        this.selectedPlanId = null;
+        this.contactName = '';
+        this.companyName = '';
+        this.planName = '';
+        this.type = '';
+        this.status = '';
+        this.companyOptions = [];
+        this.plans = [];
+        this.contact= []; 
+    }
+
+     
+
+  handleContactChange(event) {
+       this.selectedContactId = event.detail.value;
+         try {
+                        this.selectedContactId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedcontact = this.contactOptions.find(contact => contact.value === this.selectedContactId);
+
+                        if (selectedcontact) {
+                            this.contactName = selectedcontact.label;
+                            console.log("Selected contact Name:", this.contactName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedContactId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling contact change:", error);
+                    } 
+       this.contact= []; 
+       this.selectedCompanyId = null;
+       this.selectedPlanId = null;
+       this.companyOptions = [];
+       this.companyName = '';
+       this.planName = '';
+       this.plans = [];  
+       this.loadCompanies(); 
+       this.recordId = this.selectedContactId;
+        console.log("selectedContactId", this.selectedContactId);
+       console.log("selectedContactId", this.recordId);
+       //this.selectedContactname = event.detail.label;
+       //this.disableSave = !this.selectedContactId;
+
+       //console.log("selectedContactId", this.selectedContactId);
+       //console.log("selectedContactId", this.selectedContactname);
+   }
+
+    handleCompanyChange(event) {
+        this.selectedCompanyId = event.detail.value; 
+         try {
+                        this.selectedCompanyId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedcompany = this.companyOptions.find(company => company.value === this.selectedCompanyId);
+
+                        if (selectedcompany) {
+                            this.companyName = selectedcompany.label;
+                            console.log("Selected Company Name:", this.companyName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedCompanyId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling Company change:", error);
+                    }
+        this.loadPlans();
+    }
+
+   handlePlanChange(event) {
+        this.selectedPlanId = event.detail.value;   
+                try {
+                        this.selectedPlanId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedPlan = this.plans.find(plan => plan.value === this.selectedPlanId);
+
+                        if (selectedPlan) {
+                            this.planName = selectedPlan.label;
+                            console.log("Selected Plan Name:", this.planName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedPlanId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling plan change:", error);
+                    }
+     //console.log("selectedPlanId", this.selectedPlanId);
+    }
+
+
+   loadPlans() {
+    getPlansByCompany({ companyId: this.selectedCompanyId })
+        .then(result => {
+            this.plans = result.map(plan => ({
+                label: plan.Name, 
+                value: plan.Id
+            }));
+        })
+        .catch(error => {
+            console.error('Error fetching plans:', error);
+        });
+}
+
+   loadCompanies() {
+    getCompaniesByContact({ contactId: this.selectedContactId })
+        .then(result => {
+            this.companyOptions = result.map(company => ({
+                label: company.Name,
+                value: company.Id
+            }));
+        })
+        .catch(error => {
+            console.error('Error fetching companies:', error);
+        });
+}
+
+   @wire(getContactsBySSN, { ssn: '$socialSecurityNumber' })
+   wiredContacts({ error, data }) {
+       if (data) {
+           this.contactOptions = data.map(contact => ({
+               label: contact.Name,
+               value: contact.Id
+           }));
+           //this.disableContactDropdown = false;
+       } else if (error) {
+           // Handle error
+           console.error('Error fetching contacts:', error);
+       }
+   }
+   // Wire the Apex methods to retrieve picklist values
+    @wire(getTypePicklistValues)
+    wiredTypeOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.typeOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching type picklist values:', error);
+        }
+    }
+
+    @wire(getStatusPicklistValues)
+    wiredStatusOptions({ error, data }) {
+        if (data) {
+            // Map the picklist values to match the structure required by lightning-combobox
+            this.statusOptions = data.map(item => {
+                return { label: item, value: item };
+            });
+        } else if (error) {
+            console.error('Error fetching status picklist values:', error);
+        }
+    }
+
+}

@@ -1,0 +1,507 @@
+<template>    
+    <lightning-card>
+        <!--Group Of lightning Tab Set-->
+    <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+         <div class="slds-m-around_x-small">
+            <lightning-tab label="Personal information"  value="1" onactive={handleActive}>
+              <div class="container">
+                  <b> <h2>Personal Information</h2></b>
+        <div class="row">
+            <div class="field">
+               <legend class="slds-form-element__legend slds-form-element__label">First Name</legend>
+                <lightning-input variant="label-hidden" label="First Name" type="text" value={firstName} onchange={handleFirstNameChange} class="small-input" required></lightning-input>
+            </div>
+            <div class="field">
+                <lightning-input label="Last Name" type="text" value={lastName} onchange={handleLastNameChange} class="small-input" required></lightning-input>
+            </div>
+			<div class="field">
+                <lightning-input label="Middle Name" type="text" value={middleName} onchange={handleMiddleNameChange} class="small-input"></lightning-input>
+            </div>
+              <div class="field">
+                <lightning-input label="Phone" type="tel" value={phone} onchange={handlePhoneChange} class="small-input"></lightning-input>
+            </div>
+        </div>
+		
+        <div class="row"> 
+             <div class="field">
+                <lightning-input label="Email" type="email" value={email} onchange={handleEmailChange} class="large-input"></lightning-input>
+            </div>
+		   <div class="field">
+                <lightning-input label="Date of Birth" type="date" value={birthdate} onchange={handleBirthdateChange} class="medium-input"></lightning-input>
+            </div>
+            <div class="field">
+                <lightning-input label="SSN" value={ssn} onchange={handleSSNChange}  class="medium-input"  required></lightning-input>
+            </div>
+			<div class="field">
+                <lightning-input label="Employer ID" type="text" value={planId} onchange={handlePlanIdChange} class="medium-input" ></lightning-input>
+            </div>
+           </div>
+          
+               
+          </div>  
+         
+              <div class="address-info">
+       <b> <h2>Address Information</h2></b>
+		 <div class="row1"> 
+		 <div class="field">
+                <lightning-input label="Street" value={mailingStreet} onchange={handleMailingStreetChange} class="large-input"></lightning-input>
+         </div>
+		 <div class="field">
+               <lightning-input label="City" value={mailingCity} onchange={handleMailingCityChange} class="medium-input"></lightning-input>
+         </div>
+		 <div class="field">
+                <lightning-input label="State" value={mailingState} onchange={handleMailingStateChange} class="medium-input"></lightning-input>
+         </div></div>
+          <div class="row1">
+		 <div class="field">
+                <lightning-input label="Zip" value={mailingPostalCode} onchange={handleMailingPostalCodeChange} class="medium-input"></lightning-input>
+         </div>
+		 <div class="field">
+               <lightning-input label="Country" value={mailingCountry} onchange={handleMailingCountryChange} class="medium-input"></lightning-input>
+         </div>	 
+		   </div>
+         </div>          
+            </lightning-tab>
+           
+            <!--<lightning-tab label="Upload"  value="2" onactive={handleActive}>
+                Contact Dummy Data...
+            </lightning-tab>--> 
+           
+            <lightning-tab label="Plan Selection"  value="2" onactive={handleActive}>  
+                <lightning-card title="Which Plan Are You Enrolling In?">
+                    <!--<lightning-input label="Enter Plan Number" onchange={handlePlanNumberChange}></lightning-input>-->
+                    <template if:true={account}>
+                        <template for:each={picklistValues} for:item="value">
+                            <div key={value}>
+                                 <!--<lightning-checkbox label={value} onchange={handleChange1}></lightning-checkbox>-->
+                <lightning-input type="checkbox" label= {value} onchange={handlePlanNumberChange} ></lightning-input>
+                                <h3>{selectedValues}</h3>
+                                <!-- Placeholder for image -->
+                                <!-- <img src={getImage(value)} alt={value} if:true={isChecked(value)} />-->
+                            </div>
+                        </template>
+                    </template>
+                </lightning-card> 
+           </lightning-tab>
+
+
+
+
+
+
+
+
+
+           
+             <lightning-tab label="Plan Information"  value="3" onactive={handleActive}>
+             How much would you like to contribute?
+                <div class="field">
+                <lightning-input label="Estimated salary" type="tel" value={salary} onchange={handlePhoneChange} class="small-input"></lightning-input>
+            </div>
+ <!--<lightning-layout>
+    <lightning-layout-item size="3" class="slds-col">
+        <lightning-combobox label="Plan Type" value={planType} options={planOptions} onchange={handlePlanTypeChange}></lightning-combobox>
+    </lightning-layout-item>
+    <lightning-layout-item size="3" class="slds-col">
+        <lightning-combobox label="Vendors" value={secondPlanType} options={secondPlanOptions} onchange={handlevendorTypeChange}></lightning-combobox>
+    </lightning-layout-item>
+    <lightning-layout-item size="3" class="slds-col">
+        <lightning-input label="Contribution Amount" type="tel" value={Amount} onchange={handlePhoneChange} class="small-input"></lightning-input>
+    </lightning-layout-item>OR
+    <lightning-layout-item size="3" class="slds-col">
+        <lightning-input label="Contribution Percentage" type="tel" value={salary} onchange={handlePhoneChange} class="small-input"></lightning-input>
+    </lightning-layout-item>
+</lightning-layout>-->
+ <!-- Render existing input fields PK-->
+     <lightning-accordion allow-multiple-sections-open={allowMultipleSectionsOpen}>
+        <template for:each={accordionItems} for:item="item">
+            <lightning-accordion-section key={item.id} name={item.id} label={item.title} class={item.cssClass}>
+                <div class="slds-box slds-m-around_small">
+                    <!-- Render input fields dynamically -->
+                    <template for:each={item.inputFields} for:item="inputField">
+                        <div key={inputField.id}>
+                            <lightning-layout>
+                            <lightning-layout-item size="3" class="slds-col">
+                            <lightning-combobox label="Plan Type"  options={planOptions} onchange={handleInputChange} data-field-id={inputField.id} data-section-id={item.id}></lightning-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="3" class="slds-col">
+                            <lightning-combobox label="Vendors"  options={secondPlanOptions} onchange={handleInputChange} data-field-id={inputField.id} data-section-id={item.id}></lightning-combobox>
+                            </lightning-layout-item> 
+
+                            <lightning-layout-item size="3" class="slds-col">
+                             <lightning-input label="Contribution Amount" onchange={handleInputChange} class="small-input" data-field-id={inputField.id} data-section-id={item.id}></lightning-input>							
+                            </lightning-layout-item> 
+                            OR
+                            <lightning-layout-item size="3" class="slds-col">
+                            <lightning-input label="Contribution Percentage"  onchange={handleInputChange} class="small-input" data-field-id={inputField.id} data-section-id={item.id}></lightning-input>
+                            </lightning-layout-item>      
+                            </lightning-layout>
+                            <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" title="Delete" onclick={handleDeleteInput} data-field-id={inputField.id} data-section-id={item.id}></lightning-button-icon>
+                        </div>
+                    </template>
+                    <!-- Button to add input field -->
+                    <lightning-button label="Add Input Field" onclick={handleAddInput} data-section-id={item.id}></lightning-button>
+                </div>
+            </lightning-accordion-section>
+        </template>
+    </lightning-accordion>
+  <!-- Button to add more input fields PK -->   
+           <div class="field">
+                <lightning-input label="Total Contribution Amount" type="tel" value={salary} onchange={handlePhoneChange} class="small-input"></lightning-input>
+                 
+            </div>  
+
+            Review and Accept<br /><br />
+           <div>
+            By clicking on "I/We agree". You authorize us to verify the information you submitted and to manage the plan on your behalf. Upon your request, we will provide further 
+            information regarding this plan. You Warranty to us that the information you are submitting is true and correct.    </div><br /><br />
+         <div class="field"><label>
+                <input type="checkbox" checked={isChecked} onchange={handleChange} />
+                         I/We agree
+                               </label>
+                      <template if:true={isCheckboxNotChecked}>
+                 <span style="color: red;">*</span>
+               </template></div>
+
+            </lightning-tab> 
+            <lightning-tab label="Application Complete!"  value="4" onactive={handleActive}>
+                 
+             Your enrollment has been successfully submitted.Click Finish to return to view further information about your plan.</lightning-tab> 
+        </div>
+    </lightning-tabset>
+    
+     <div class="row">
+            <div class="field">
+                <lightning-button variant="brand" label="Save for later" onclick={handleSave}></lightning-button>
+            </div>
+       
+    <!--Navigation Button on card footer-->
+    <div slot="footer">             
+        <lightning-button variant="brand" label="Back" disabled={bDisableBackBtn} onclick={goBack}></lightning-button>
+        <lightning-button variant="brand" label="Next" disabled={bDisableNextBtn} onclick={goNext} class="slds-m-left_x-small">  </lightning-button>
+            <!-- <template if:true={showSSNError}>
+                <div class="slds-text-color_error">SSN is required</div>
+            </template>-->
+      
+    </div>
+     </div>
+</lightning-card>
+</template>
+///////
+import { LightningElement,api,track,wire } from 'lwc';
+import { createRecord } from 'lightning/uiRecordApi'; 
+import getFirstPicklistValues from '@salesforce/apex/ObjectNameController.getPicklistValues';
+import getSecondPicklistValues from '@salesforce/apex/myvendorpicklistvalues.getPicklistValues';
+import getPlantype from '@salesforce/apex/AccountController.getPlantype';
+import CONTACT_OBJECT from '@salesforce/schema/Contact';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'; 
+export default class TabWithNavigation extends LightningElement {
+    @track accordionItems = [];
+    @track selecedCheckboxes = [];
+    allowMultipleSectionsOpen = true; // Set to false if you want only one section to be open at a time
+    
+    @api planNumber;
+    account;
+    picklistValues = [];    
+
+    //value = [];
+    @track firstName;
+    @track lastName;
+    @track middleName;
+    @track birthdate;
+    @track ssn;
+   // @track planId;
+    @track email;
+    @track phone;
+    @track mailingStreet;
+    @track mailingCity;
+    @track mailingState;
+    @track mailingPostalCode;
+    @track mailingCountry; 
+
+
+   
+
+    handleChange1(event) {
+        // Handle checkbox change
+    }
+
+    getImage(value) {
+        // Return image URL based on value
+    }
+
+    isChecked(value) {
+        // Return true if value is checked
+    }
+
+  get selectedValues() {
+        return this.selecedCheckboxes.join(',');
+    }
+
+   handlePlanNumberChange(event) {
+       this.selecedCheckboxes = event.detail.value;
+
+       
+   }
+
+
+ 
+
+    
+connectedCallback() {
+        // Sample data, you can replace this with your actual data
+        this.accordionItems = [
+            {
+                id: '1',
+                title: 'Section 1',
+                inputFields: [{ id: 'input1', label: 'Input 1', value: '' }
+                             ],
+                cssClass: '' // Optional CSS class for styling
+            },
+            {
+                id: '2',
+                title: 'Section 2',
+                inputFields: [{ id: 'input1', label: 'Input 1', value: '' }],
+                cssClass: ''
+            },
+            {
+                id: '3',
+                title: 'Section 3',
+                inputFields: [{ id: 'input1', label: 'Input 1', value: '' }],
+                cssClass: ''
+            }
+        ];
+    }
+
+    handleInputChange(event) {
+        const sectionId = event.target.dataset.sectionId;
+        const fieldId = event.target.dataset.fieldId;
+        const inputValue = event.target.value;
+        const sectionIndex = this.accordionItems.findIndex(item => item.id === sectionId);
+        const fieldIndex = this.accordionItems[sectionIndex].inputFields.findIndex(field => field.id === fieldId);
+        this.accordionItems[sectionIndex].inputFields[fieldIndex].value = inputValue;
+    }
+
+    handleAddInput(event) {
+        const sectionId = event.target.dataset.sectionId;
+        const sectionIndex = this.accordionItems.findIndex(item => item.id === sectionId);
+        const newFieldId = 'input' + (this.accordionItems[sectionIndex].inputFields.length + 1);
+        this.accordionItems[sectionIndex].inputFields.push({ id: newFieldId, label: 'Input ' + (this.accordionItems[sectionIndex].inputFields.length + 1), value: '' });
+    }
+
+    handleDeleteInput(event) {
+        const sectionId = event.target.dataset.sectionId;
+        const fieldId = event.target.dataset.fieldId;
+        const sectionIndex = this.accordionItems.findIndex(item => item.id === sectionId);
+        const fieldIndex = this.accordionItems[sectionIndex].inputFields.findIndex(field => field.id === fieldId);
+        this.accordionItems[sectionIndex].inputFields.splice(fieldIndex, 1);
+    }
+ 
+
+
+     handleFirstNameChange(event) {
+        this.firstName = event.target.value;
+    }
+
+    handleLastNameChange(event) {
+        this.lastName = event.target.value;
+    }
+
+    handleMiddleNameChange(event) {
+        this.middleName = event.target.value;
+    }
+
+    handleBirthdateChange(event) {
+        this.birthdate = event.target.value;
+    }
+
+    handleSSNChange(event) {
+        this.ssn = event.target.value;
+    }
+
+  
+
+    handleEmailChange(event) {
+        this.email = event.target.value;
+    }
+
+    handlePhoneChange(event) {
+        this.phone = event.target.value;
+    }
+
+    handleMailingStreetChange(event) {
+        this.mailingStreet = event.target.value;
+    }
+
+    handleMailingCityChange(event) {
+        this.mailingCity = event.target.value;
+    }
+
+    handleMailingStateChange(event) {
+        this.mailingState = event.target.value;
+    }
+
+    handleMailingPostalCodeChange(event) {
+        this.mailingPostalCode = event.target.value;
+    }
+
+    handleMailingCountryChange(event) {
+        this.mailingCountry = event.target.value;
+    }
+      handlePlanIdChange(event) {
+        this.planNumber = event.target.value;
+        
+    }
+    
+    @wire(getPlantype, { planNumber: '$planNumber' })
+    wiredAccount({ error, data }) {
+        if (data) {
+            this.account = data;
+            this.picklistValues = this.account.Plan_type1__c.split(';');
+        } else if (error) {
+            console.error('Error fetching Account:', error);
+        }
+    }
+
+
+    
+
+    handleSave() {
+        const fields = {
+            FirstName: this.firstName,
+            LastName: this.lastName,
+            MiddleName: this.middleName,
+            Birthdate: this.birthdate,
+            SSN__c: this.ssn,
+           // PlanId__c: this.planId,
+            Email: this.email,
+            Phone: this.phone,
+            MailingStreet: this.mailingStreet,
+            MailingCity: this.mailingCity,
+            MailingState: this.mailingState,
+            MailingPostalCode: this.mailingPostalCode,
+            MailingCountry: this.mailingCountry
+            
+        };
+
+        const recordInput = { apiName: CONTACT_OBJECT.objectApiName, fields };
+
+        createRecord(recordInput)
+           .then(contact => {
+                this.message = contact;
+                this.error = undefined;
+                if(this.message !== undefined) {                    
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'Contact created',
+                            variant: 'success',
+                        }),
+                    );
+                }
+                
+                console.log(JSON.stringify(contact));
+                console.log("contact", this.message);
+            })
+             .catch(error => {
+                this.message = undefined;
+                this.error = error;
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error creating record',
+                        message: error.body.message,
+                        variant: 'error',
+                    }),
+                );
+                console.log("error", JSON.stringify(this.error));
+            });
+    }
+
+ 
+// Js Properties for first picklist
+    @track planType = 'Pre-Tax Deferral'; 
+    @track planOptions = [];
+
+    @wire(getFirstPicklistValues)
+    wiredFirstPicklistValues({ error, data }) {
+        if (data) {
+            this.planOptions = data.map(option => ({
+                label: option,
+                value: option
+            }));
+        } else if (error) {
+            console.error('Error fetching first picklist values: ', error);
+        }
+    }
+
+  // Js Properties for second picklist
+    @track secondPlanType = ''; 
+    @track secondPlanOptions = [];
+
+    @wire(getSecondPicklistValues)
+    wiredSecondPicklistValues({ error, data }) {
+        if (data) {
+            this.secondPlanOptions = data.map(option => ({
+                label: option,
+                value: option
+            }));
+        } else if (error) {
+            console.error('Error fetching second picklist values: ', error);
+        }
+    }
+    
+    // Js Properties checkbox "I/We agree"
+    @track isChecked = false;
+    
+    get isCheckboxNotChecked() {
+        return !this.isChecked;
+    }
+    handleChange(event) {
+        this.isChecked = event.target.checked;
+    }
+
+    // Js Properties start
+     @track activeTab = '1';
+    get bDisableBackBtn(){
+        return Number(this.activeTab) == 1 ? true : false;
+    }
+    get bDisableNextBtn(){
+        return Number(this.activeTab) == 4 ? true : false;
+    }
+    // JS functions start 
+    handleActive(event) {
+     this.activeTab = event.target.value;
+    }
+    
+    goBack(){
+        let activeTabValue = Number(this.activeTab) - 1;
+        this.activeTab = activeTabValue.toString();
+      }
+    
+    goNext(){
+ 
+ let activeTabValue = Number(this.activeTab) + 1;
+    this.activeTab = activeTabValue.toString();   // Add this line for debugging
+  console.log('New Active Tab after increment:', this.activeTab);
+     
+    console.log('Entering goNext() function');
+       if (!this.firstName || !this.lastName  || !this.SSN__c ) {
+            // Alert the user or display an error message
+            // For example, you can use showToast() method to show a toast message
+            this.showToast('Error', 'Please enter  First Name and Last Name and SSN', 'error');
+            return;
+        }
+     
+      
+    }
+      showToast(title, message, variant) {
+        const evt = new ShowToastEvent({
+            title: title,
+            message: message,
+            variant: variant
+        });
+        this.dispatchEvent(evt);
+      
+    }
+    // JS functions end    
+}

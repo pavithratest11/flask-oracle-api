@@ -1,0 +1,341 @@
+public with sharing class DistssnController {
+
+    @AuraEnabled(cacheable=true)
+    public static List<Contact> getContactsBySSN(String ssn) {
+        // Implement logic to query contacts based on SSN
+        return [SELECT Id, Name 
+                FROM Contact 
+                WHERE Social_secuirty_number__c = :ssn 
+                ORDER BY LastModifiedDate DESC  // Example ordering to prioritize latest modified records
+                ];
+    }
+
+    // Other methods for fetching accounts, plans, and saving distribution records
+}
+
+
+<!-- distributionForm.html -->
+<template>
+    <lightning-card title="Distribution Record">
+        <div class="slds-p-around_medium">
+            <lightning-input label="Name" value={name} onchange={handleNameChange}></lightning-input>
+            <lightning-input label="Social Security Number" value={socialSecurityNumber} onchange={handleSSNChange}></lightning-input>
+            <lightning-combobox label="Contact" options={contactOptions} onchange={handleContactChange} disabled={disableContactDropdown}></lightning-combobox>   
+            <lightning-button label="Save" onclick={handleSave}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
+
+
+import { LightningElement, track,wire } from 'lwc';
+import { createRecord } from 'lightning/uiRecordApi';
+import DISTRIBUTION_OBJECT from '@salesforce/schema/Distribution__c';
+//import NAME_FIELD from '@salesforce/schema/Distribution__c.Name';
+import getContactsBySSN from '@salesforce/apex/DistssnController.getContactsBySSN';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'; 
+
+export default class DistributionForm extends LightningElement {
+    @track name;
+    @track socialSecurityNumber;
+    @track contactOptions = [];
+    selectedContactId;
+    //selectedContactname;
+
+    handleNameChange(event) {
+        this.name = event.target.value;
+    }
+
+    handleSSNChange(event) {
+        this.socialSecurityNumber = event.target.value;
+        console.log("socialSecurityNumber", this.socialSecurityNumber);
+    }
+
+    handleSave() {
+        const fields = { Name : this.name,
+                         Social_secuirty_number__c : this.socialSecurityNumber,
+                         Contact1__c: this.selectedContactId
+                         //Contact1__c: this.selectedContactname 
+                         };
+        //fields[NAME_FIELD.fieldApiName] = this.name;
+       // fields[SOCIAL_SECURITY_FIELD.fieldApiName] = this.socialSecurityNumber;
+        //fields[NAME_FIELD.Social_secuirty_number__c] = this.selectedContactId;
+        //fields[SSN_FIELD.fieldApiName] = this.socialSecurityNumber;
+
+        const recordInput = { apiName: DISTRIBUTION_OBJECT.objectApiName, fields };
+        createRecord(recordInput)
+            .then(() => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Record saved successfully',
+                        variant: 'success'
+                    })
+                );
+                this.clearFields();
+            })
+            .catch(error => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error creating record',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
+            });
+    }
+
+    clearFields() {
+        this.name = '';
+        this.socialSecurityNumber = '';
+    }
+
+  handleContactChange(event) {
+       this.selectedContactId = event.detail.value;
+       //this.selectedContactname = event.detail.label;
+       //this.disableSave = !this.selectedContactId;
+
+       console.log("selectedContactId", this.selectedContactId);
+       //console.log("selectedContactId", this.selectedContactname);
+   }
+
+   @wire(getContactsBySSN, { ssn: '$socialSecurityNumber' })
+   wiredContacts({ error, data }) {
+       if (data) {
+           this.contactOptions = data.map(contact => ({
+               label: contact.Name,
+               value: contact.Name //contact.Id
+           }));
+           this.disableContactDropdown = false;
+       } else if (error) {
+           // Handle error
+           console.error('Error fetching contacts:', error);
+       }
+   }
+}
+///////////////////
+backup july 2
+<!-- distributionForm.html -->
+<template>
+    <lightning-card title="Distribution Record">
+        <div class="slds-p-around_medium">
+            <lightning-input label="Name" value={name} onchange={handleNameChange}></lightning-input>
+            <lightning-input label="Social Security Number" value={socialSecurityNumber} onchange={handleSSNChange}></lightning-input>
+            <lightning-combobox label="Contact" options={contactOptions} onchange={handleContactChange}></lightning-combobox>   
+            <lightning-combobox label="Company" options={companyOptions} onchange={handleCompanyChange} disabled={disableCompanyDropdown}></lightning-combobox>
+            <lightning-combobox label="Plan" options={plans} onchange={handlePlanChange}></lightning-combobox>
+            <lightning-button label="Save" onclick={handleSave}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
+
+import { LightningElement, track,wire } from 'lwc';
+import { createRecord } from 'lightning/uiRecordApi';
+import DISTRIBUTION_OBJECT from '@salesforce/schema/Distribution__c';
+//import NAME_FIELD from '@salesforce/schema/Distribution__c.Name';
+import getContactsBySSN from '@salesforce/apex/DistssnController.getContactsBySSN';
+import getCompaniesByContact from '@salesforce/apex/DistssnController.getCompaniesByContact';
+import getPlansByCompany from '@salesforce/apex/DistssnController.getPlansByCompany';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'; 
+
+export default class DistributionForm extends LightningElement {
+    @track name;
+    @track socialSecurityNumber =null;
+    @track contactOptions = [];
+    @track companyOptions = [];
+    selectedContactId;
+    //selectedCompanyId;
+    //selectedContactname;
+    @track selectedCompanyId;
+    @track selectedPlanId;
+    @track planName; 
+    @track companyName;
+    @track contactName;
+    plans = [];
+
+    handleNameChange(event) {
+        this.name = event.target.value;
+    }
+
+    handleSSNChange(event) {
+        this.socialSecurityNumber = event.target.value;
+        console.log("socialSecurityNumber", this.socialSecurityNumber);
+    }
+
+    handleSave() {
+        const fields = { Name : this.name,
+                         Social_secuirty_number__c : this.socialSecurityNumber,
+                         Contact__c: this.selectedContactId,
+                         Company__c: this.selectedCompanyId,
+                         Plan__c: this.selectedPlanId,
+                         Contact1__c: this.contactName, 
+                         Company1__c: this.companyName,
+                         Plan1__c: this.planName                         
+                         };
+
+        const recordInput = { apiName: DISTRIBUTION_OBJECT.objectApiName, fields };
+        createRecord(recordInput)
+            .then(() => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Record saved successfully',
+                        variant: 'success'
+                    })
+                );
+                this.clearFields();
+            })
+            .catch(error => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error creating record',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
+            });
+    }
+
+    clearFields() {
+        this.name = '';
+        this.socialSecurityNumber = '';
+        this.selectedContactId = null;
+        this.selectedCompanyId = null;
+        this.selectedPlanId =null;
+        this.companyOptions = [];
+        this.plans = []
+    }
+
+  handleContactChange(event) {
+       this.selectedContactId = event.detail.value;
+         try {
+                        this.selectedContactId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedcontact = this.contactOptions.find(contact => contact.value === this.selectedContactId);
+
+                        if (selectedcontact) {
+                            this.contactName = selectedcontact.label;
+                            console.log("Selected contact Name:", this.contactName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedContactId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling contact change:", error);
+                    }
+       this.loadCompanies();
+       //this.selectedContactname = event.detail.label;
+       //this.disableSave = !this.selectedContactId;
+
+       //console.log("selectedContactId", this.selectedContactId);
+       //console.log("selectedContactId", this.selectedContactname);
+   }
+
+    handleCompanyChange(event) {
+        this.selectedCompanyId = event.detail.value; 
+         try {
+                        this.selectedCompanyId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedcompany = this.companyOptions.find(company => company.value === this.selectedCompanyId);
+
+                        if (selectedcompany) {
+                            this.companyName = selectedcompany.label;
+                            console.log("Selected Company Name:", this.companyName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedCompanyId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling Company change:", error);
+                    }
+        this.loadPlans();
+    }
+
+   handlePlanChange(event) {
+        this.selectedPlanId = event.detail.value;   
+                try {
+                        this.selectedPlanId = event.detail.value;
+
+                        // Ensure plans are loaded before attempting to find selected plan
+                        const selectedPlan = this.plans.find(plan => plan.value === this.selectedPlanId);
+
+                        if (selectedPlan) {
+                            this.planName = selectedPlan.label;
+                            console.log("Selected Plan Name:", this.planName);
+                            // Use planName as needed
+                        } else {
+                            console.error("Plan not found for id:", this.selectedPlanId);
+                        }
+                    } catch (error) {
+                        console.error("Error handling plan change:", error);
+                    }
+     //console.log("selectedPlanId", this.selectedPlanId);
+    }
+
+
+   loadPlans() {
+    getPlansByCompany({ companyId: this.selectedCompanyId })
+        .then(result => {
+            this.plans = result.map(plan => ({
+                label: plan.Name, 
+                value: plan.Id
+            }));
+        })
+        .catch(error => {
+            console.error('Error fetching plans:', error);
+        });
+}
+
+   loadCompanies() {
+    getCompaniesByContact({ contactId: this.selectedContactId })
+        .then(result => {
+            this.companyOptions = result.map(company => ({
+                label: company.Name,
+                value: company.Id
+            }));
+        })
+        .catch(error => {
+            console.error('Error fetching companies:', error);
+        });
+}
+
+   @wire(getContactsBySSN, { ssn: '$socialSecurityNumber' })
+   wiredContacts({ error, data }) {
+       if (data) {
+           this.contactOptions = data.map(contact => ({
+               label: contact.Name,
+               value: contact.Id
+           }));
+           //this.disableContactDropdown = false;
+       } else if (error) {
+           // Handle error
+           console.error('Error fetching contacts:', error);
+       }
+   }
+}
+/////////////////////
+
+Text fields /readonly fields: 	
+Contact1__c
+Company1__c
+Plan1__c
+
+Last_Name__c
+First_Name__c
+Email__c
+Birthdate__c
+Last_Name__c
+Phone__c
+Date_of_Termination__c
+Date_of_Employment__c
+
+
+lookupfields api name:
+Birthdate1__c
+Date_of_Employment1__c
+Date_of_Termination1__c
+Email1__c	
+First_Name1__c
+Last_Name1__c
+phone1__c
