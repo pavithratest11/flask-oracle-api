@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: flask-oracle-api
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      curl -o /tmp/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -L https://download.oracle.com/otn_software/linux/instantclient/198000/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip
+      unzip /tmp/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /opt
+      ln -s /opt/instantclient_19_8 /opt/instantclient
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DB_HOST
+        value: "hq-svr-ora"
+      - key: DB_USER
+        value: "qt"
+      - key: DB_PASSWORD
+        value: "qt"
+      - key: DB_SERVICE_NAME
+        value: "RaDB.world"
