@@ -1,0 +1,27 @@
+ 
+// Query to get the records created on or after 2025-01-26
+List<Contact> contactsToDelete = [SELECT Id, FirstName, LastName, CreatedDate 
+                                  FROM Contact 
+                                  WHERE DAY_ONLY(CreatedDate) >= 2025-01-26 and FirstName !='p'];
+
+// Check if there are any records to delete
+if (!contactsToDelete.isEmpty()) {
+    delete contactsToDelete;  // Perform the delete operation
+    System.debug('Deleted ' + contactsToDelete.size() + ' records.');
+} else {
+    System.debug('No records found to delete.');
+	
+}
+ 
+ 
+ // Query to get the records created on or after 2025-01-26
+List<case> casesToDelete = [SELECT Id,Subject from case where Subject like '%New Contact Case for%'];
+
+// Check if there are any records to delete
+if (!casesToDelete.isEmpty()) {
+    delete casesToDelete;  // Perform the delete operation
+    System.debug('Deleted ' + casesToDelete.size() + ' records.');
+} else {
+    System.debug('No records found to delete.');
+	
+}

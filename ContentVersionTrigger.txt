@@ -1,0 +1,12 @@
+trigger ContentVersionTrigger on ContentVersion (after insert) {
+
+    // Loop through all the ContentVersion records that were inserted
+    for (ContentVersion content : Trigger.New) {
+        // Check if the file is a CSV by checking the file extension or MIME type
+        if (content.FileType == 'CSV' || content.Title.endsWith('.csv')) {
+            // Enqueue the Queueable job with the ContentVersion ID (File ID)
+            CSVProcessorQueueable queueableJob = new CSVProcessorQueueable(content.ContentDocumentId);
+            System.enqueueJob(queueableJob);  // Enqueue the job for asynchronous processing
+        }
+    }
+}

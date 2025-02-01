@@ -1,0 +1,146 @@
+public class CSVProcessorQueueable implements Queueable {
+
+    public Id fileId;  // File ID of the CSV file (Content Version)
+
+    // Constructor to initialize with the file ID
+    public CSVProcessorQueueable(Id fileId) {
+        this.fileId = fileId;
+    }
+
+    // The execute method processes the CSV file and inserts contacts
+    public void execute(QueueableContext context) {
+        try {
+            // Step 1: Retrieve the CSV data from ContentVersion (Salesforce File)
+            ContentVersion file = [SELECT VersionData FROM ContentVersion WHERE ContentDocumentId = :fileId LIMIT 1];
+            if (file == null) {
+                System.debug('File not found with ID: ' + fileId);
+                return;
+            }
+
+            // Step 2: Convert the file's VersionData Blob to String (UTF-8 Encoding)
+            Blob fileBlob = file.VersionData;
+            String csvData = fileBlob.toString();
+
+            // Step 3: Split CSV data into rows
+            List<String> rows = csvData.split('\n');
+            System.debug('Number of rows in CSV: ' + rows.size());
+
+            // Step 4: Process each row (skip the header row)
+            List<Contact> contactsToInsert = new List<Contact>();
+            List<Case> casesToInsert = new List<Case>();  // List to store new Case records
+            Set<String> firstNames = new Set<String>();
+            Set<String> lastNames = new Set<String>();
+
+            // Step 4.1: Collect all unique First and Last Names from CSV
+            for (Integer i = 1; i < rows.size(); i++) {  // Start from index 1 to skip the header row
+                String row = rows[i];
+                List<String> columns = row.split(',');
+
+                // Ensure the row has at least 2 columns (First Name, Last Name)
+                if (columns.size() >= 2) {
+                    String firstName = columns[columns.size() - 1].trim(); // Last column as First Name, trim spaces
+                    String lastName = columns[columns.size() - 2].trim();  // Second to last column as Last Name, trim spaces
+
+                    // Add to sets
+                    firstNames.add(firstName.toLowerCase());
+                    lastNames.add(lastName.toLowerCase());
+                }
+            }
+
+            // Step 5: Query for existing contacts in Salesforce
+            Map<String, Contact> existingContactsMap = new Map<String, Contact>();
+            if (!firstNames.isEmpty() && !lastNames.isEmpty()) {
+                List<Contact> existingContacts = [
+                    SELECT Id, FirstName, LastName 
+                    FROM Contact 
+                    WHERE FirstName IN :firstNames AND LastName IN :lastNames
+                ];
+
+                // Map contacts by FirstName and LastName
+                for (Contact c : existingContacts) {
+                    String fullName = c.FirstName.toLowerCase() + ' ' + c.LastName.toLowerCase();
+                    existingContactsMap.put(fullName, c);
+                }
+            }
+
+            // Step 6: Process the CSV data and create new contacts if they do not already exist
+            for (Integer i = 1; i < rows.size(); i++) {  // Start from index 1 to skip the header row
+                String row = rows[i];
+                List<String> columns = row.split(',');
+
+                // Ensure the row has at least 2 columns (First Name, Last Name)
+                if (columns.size() >= 2) {
+                    String firstName = columns[columns.size() - 1].trim(); // Last column as First Name, trim spaces
+                    String lastName = columns[columns.size() - 2].trim();  // Second to last column as Last Name, trim spaces
+
+                    // Retrieve SSN and VestedBalance from the respective columns
+                    String ssn = columns.size() > 3 ? columns[3].trim() : null; // 4th column for SSN (index 3)
+                    Decimal vestedBalance = null; // Declare as Decimal for currency handling
+                    if (columns.size() > 19 && String.isNotBlank(columns[19])) { // 20th column for VestedBalance (index 19)
+                        try {
+                            // Remove $ and commas, then trim spaces
+                                String sanitizedValue = columns[19].replace('$', '').replace(',', '').trim();
+                                vestedBalance = Decimal.valueOf(sanitizedValue); // Convert to Decimal
+                        } catch (Exception ex) {
+                            System.debug('Invalid VestedBalance value for row ' + i + ': ' + columns[19] + ' - ' + ex.getMessage());
+                            vestedBalance = null; // Default to null if parsing fails
+                        }
+                    }
+
+                    // Check if the contact already exists
+                    String fullName = firstName.toLowerCase() + ' ' + lastName.toLowerCase();
+                    if (!existingContactsMap.containsKey(fullName)) {
+                        Contact newContact = new Contact(
+                            FirstName = firstName, 
+                            LastName = lastName, 
+                            SSN__c = ssn // Assign SSN to the custom SSN__c field
+                        );
+                        contactsToInsert.add(newContact);
+
+                        // Create a Case record for each new contact
+                        Case newCase = new Case(
+                            Subject = 'New Contact Case for ' + fullName, 
+                            Status = 'New',
+                            Priority = 'Medium',
+                            VestedBalance__c = vestedBalance // Assign VestedBalance to the custom VestedBalance__c field
+                        );
+                        casesToInsert.add(newCase);
+                    }
+                }
+            }
+
+            // Step 7: Insert new contacts in batches to avoid hitting DML limits
+            if (!contactsToInsert.isEmpty()) {
+                Integer batchSize = 200;  // Adjust batch size as needed
+                for (Integer i = 0; i < contactsToInsert.size(); i += batchSize) {
+                    List<Contact> batchToInsert = new List<Contact>();
+                    for (Integer j = i; j < Math.min(i + batchSize, contactsToInsert.size()); j++) {
+                        batchToInsert.add(contactsToInsert[j]);
+                    }
+                    insert batchToInsert;
+                    System.debug('Inserted ' + batchToInsert.size() + ' contacts.');
+                }
+            } else {
+                System.debug('No new contacts to insert.');
+            }
+
+            // Step 8: Insert Cases in batches to avoid hitting DML limits
+            if (!casesToInsert.isEmpty()) {
+                Integer batchSize = 200;  // Adjust batch size as needed
+                for (Integer i = 0; i < casesToInsert.size(); i += batchSize) {
+                    List<Case> batchToInsert = new List<Case>();
+                    for (Integer j = i; j < Math.min(i + batchSize, casesToInsert.size()); j++) {
+                        batchToInsert.add(casesToInsert[j]);
+                    }
+                    insert batchToInsert;
+                    System.debug('Inserted ' + batchToInsert.size() + ' cases.');
+                }
+            } else {
+                System.debug('No new cases to insert.');
+            }
+            
+        } catch (Exception e) {
+            System.debug('Error processing CSV: ' + e.getMessage());
+        }
+    }
+}

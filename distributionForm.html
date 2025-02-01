@@ -1,0 +1,221 @@
+<!-- distributionForm.html -->
+<template>
+    <lightning-card title="Distribution Record">
+        <div class="slds-grid slds-wrap slds-gutters">
+        <!-- Left Column -->
+        <div class="slds-col slds-size_1-of-2">
+        <div class="slds-p-around_medium">
+           <!-- <lightning-input label="Name" value={name} onchange={handleNameChange}></lightning-input>-->
+            <lightning-input label="Social Security Number" value={socialSecurityNumber} onchange={handleSSNChange}></lightning-input>
+            <lightning-combobox label="Contact" options={contactOptions} onchange={handleContactChange}></lightning-combobox>   
+            <lightning-combobox label="Company" options={companyOptions} onchange={handleCompanyChange} disabled={disableCompanyDropdown}></lightning-combobox>
+            <lightning-combobox label="Plan" options={plans} onchange={handlePlanChange}></lightning-combobox></br>            
+            <lightning-input label="First Name" value={contact.FirstName} readonly></lightning-input>
+            <lightning-input label="Last Name" value={contact.LastName} readonly></lightning-input>
+            <lightning-input label="Middle Name" value={contact.MiddleName} readonly></lightning-input>
+            <lightning-input label="Suffix" value={contact.Suffix} readonly></lightning-input>
+            <lightning-input label="SSN" value={contact.Social_secuirty_number__c} readonly></lightning-input>
+           
+            
+            
+
+            </div>
+            </div>
+         <!-- Right Column -->
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-p-around_medium">
+                     
+                     <lightning-combobox label="Distribution Plan Type" value={type}  options={typeOptions} onchange={handleTypeChange}> </lightning-combobox>
+                      <lightning-combobox label="Election" value={Elect}  options={ElectionOptions} onchange={handleElectionChange}> </lightning-combobox>
+                     <lightning-combobox label="Status" value={status} options={statusOptions} onchange={handleStatusChange}></lightning-combobox></br>
+                      <lightning-input label="Birth Date" value={contact.Birthdate} readonly></lightning-input>
+            <lightning-input label="Date of Employment" value={contact.Date_of_Employment__c} readonly></lightning-input>
+            <lightning-input label="Date of Termination" value={contact.Date_of_Termination__c} readonly></lightning-input>
+            <lightning-input label="Email" value={contact.Email} readonly></lightning-input>
+            <lightning-input label="Phone" value={contact.Phone} readonly></lightning-input>
+            <lightning-input label="Marital Status" value={contact.Marital_Status__c} readonly></lightning-input>
+            <lightning-input label="Other Address" value={contact.otherAddress} readonly></lightning-input>
+                 </div>
+            </div>            
+        </div>
+
+        <template if:true={showFields}>
+            <div class="slds-m-around_medium">
+             <lightning-accordion allow-multiple-section-opening>
+             <lightning-accordion-section name="RMD" label="RMD">
+                <lightning-combobox label="RMD Election" value={RMDElection} options={RMDElectionOptions} onchange={handleRMDElectionChange}></lightning-combobox>
+                    <template if:true={showCommencementdate}>
+                      <lightning-input label="RMD Commencement Date" type="date" value={Commencementdate} onchange={handleCommencementdateChange} ></lightning-input>  
+                    </template>  
+                <lightning-combobox label="RMD Amount Election" value={RMDAmount} options={RMDAmountOptions} onchange={handleRMDAmountChange}></lightning-combobox>
+                        <template if:true={showGrossAmount}>
+                        <lightning-input label="RMD Gross Amount" value={GrossAmount} onchange={handleGrossAmountChange} ></lightning-input>  
+                        </template> 
+                <lightning-combobox label="RMD Liquidation Election" value={RMDLiquidation} options={RMDLiquidationOptions} onchange={handleRMDLiquidationChange}></lightning-combobox>
+                <!-- new code-->
+                <!--<template> -->
+    <lightning-layout multiple-rows>
+        <template for:each={rows} for:item="row" for:index="index">
+            <lightning-layout-item key={row.id} size="12">
+                <lightning-layout horizontal-align="spread" class="slds-box slds-box_xx-small">
+                <!-- new code-->                
+                 <template if:true={showsourceFields}>
+                  <lightning-combobox  label="RMD Source Fund" value={row.SourceFund} options={RMDSourceFundOptions} data-id={row.id} onchange={handleSourceFundChange}> </lightning-combobox> 
+                  <lightning-combobox  label="RMD Source Format" value={row.SourceFormat} options={RMDSourceFormatOptions} data-id={row.id}     onchange={handleSourceFormatChange}> </lightning-combobox> 
+                </template>   
+
+                 <template if:true={row.showPercent}>
+                  <lightning-input label="RMD Source Percent" value={row.SourcePercent} onchange={handleSourcePercentChange} data-id={row.id}></lightning-input> 
+                  </template> 
+                  <template if:true={row.showAmount}>
+                  <lightning-input label="RMD Source Amount" value={row.SourceAmount} onchange={handleSourceAmountChange} data-id={row.id}></lightning-input>
+                  </template>
+
+                   <!-- new code-->
+                   <template if:true={showsourceFields}>
+                     <lightning-button 
+                        icon-name="utility:add" 
+                        alternative-text="Add Row" 
+                        onclick={handleAddRow}
+                        class="slds-m-left_small">
+                    </lightning-button>
+
+                    <lightning-button 
+                        icon-name="utility:delete" 
+                        alternative-text="Delete Row" 
+                        onclick={handleDeleteRow} 
+                        data-id={row.id}>
+                    </lightning-button>
+                    </template> 
+                </lightning-layout>
+            </lightning-layout-item>
+        </template>
+    </lightning-layout>
+ <!--</template> -->
+                    <!-- new code-->
+
+                 </lightning-accordion-section>
+                 </lightning-accordion>
+            </div>
+        </template> 
+
+
+        <template if:true={showTerminationFields}>
+            <div class="slds-m-around_medium">
+            <lightning-accordion allow-multiple-section-opening>
+            <lightning-accordion-section name="Termination" label="Termination">
+              <template if:true={showTraditionalandElectiveFields}>
+                    <lightning-combobox  label="Traditional Retirement Account" value={TraditionalRetirement} options={TraditionalRetirementOptions} onchange={handleTraditionalRetirementChange}> </lightning-combobox>
+                    <template if:true={showTraditionalFields}>
+                    <lightning-input label="Traditional IRA Plan Name" value={TradIRAPlan} onchange={handleTradIRAPlanChange}></lightning-input>
+                    <lightning-input label="Traditional Account Number" value={TradAccount} onchange={handleTradAccountChange}></lightning-input>
+                    <lightning-input label="Traditional Account Delivery Address" value={TradAccountDeliveryAddr} onchange={handleTradAccountDeliveryAddrChange}></lightning-input>
+                    </template > 
+
+                    <lightning-combobox  label="Roth Elective Deferral Account" value={RothElectiveDeferral} options={RothElectiveDeferralOptions} onchange={handleRothElectiveDeferralChange}> </lightning-combobox> 
+                    <template if:true={showElectiveFields}>
+                    <lightning-input label="Roth Elective IRA Plan Name" value={ElectiveIRAPlan} onchange={handleElectiveIRAPlanChange}></lightning-input>
+                    <lightning-input label="Roth Elective Account Number" value={ElectiveAccount} onchange={handleElectiveAccountChange}></lightning-input>
+                    <lightning-input label="Roth Elective Account Delivery Address" value={ElectiveAccountDeliveryAddr} onchange={handleElectiveAccountDeliveryAddrChange}></lightning-input>
+                     </template >
+                </template >
+                     <template if:true={checkboxfield}>              
+                     <lightning-input type="checkbox" label="Additional Tax Withholding" checked={isTaxWithholdingChecked} onchange={handleCheckboxChange}></lightning-input>
+                      <template if:true={isTaxWithholdingChecked}>
+                     <lightning-input label="Additional Federal Percentage" value={FederalPercent} onchange={handleFederalPercentChange}></lightning-input>
+                     <lightning-input label="Additional State Percentage" value={StatePercent} onchange={handleStatePercentChange}></lightning-input>
+                       <template if:true={errorMessage}>
+            <div class="slds-text-color_error">{errorMessage}</div>
+        </template>
+ </template >
+                      </template>
+             </lightning-accordion-section>   
+        </lightning-accordion>
+                 </div>
+
+
+
+           </template>  
+            <template if:true={showTransferExchangeFields}>
+            <div class="slds-m-around_medium">
+                <lightning-accordion allow-multiple-section-opening>
+                    <lightning-accordion-section name="TransferExchange" label="Transfer/Exchange">
+                        <!-- Add content for Transfer/Exchange section here -->
+                         <lightning-combobox  label="Transfer/Exchange Tranaction Type" value={TransferExchange1} options={TransferExchangeOptions1} onchange={handleTransferExchangeChange1}> </lightning-combobox>
+                         <lightning-combobox  label="Transfer/Exchange Transaction Extent" value={TransferExchange2} options={TransferExchangeOptions2} onchange={handleTransferExchangeChange2}> </lightning-combobox>
+                         <lightning-combobox  label="Transfer/Exchange In-Kind Flag" value={TransferExchange3} options={TransferExchangeOptions3} onchange={handleTransferExchangeChange3}> </lightning-combobox>
+                         <lightning-combobox  label="Source Investment Provider" value={TransferExchange4} options={TransferExchangeOptions4} onchange={handleTransferExchangeChange4}> </lightning-combobox>
+                                 <template if:true={showSource}>
+                                 <lightning-input label="Source Contract Number" type="Number" value={sourcenumber} onchange={handlesourcenumberChange} ></lightning-input> 
+                                 <lightning-input label="Source Contract Date" type="date" value={sourcedate} onchange={handlesourcedateChange} ></lightning-input>  
+                                    </template>       
+                         <lightning-combobox  label="Destination Investment Provider" value={TransferExchange5} options={TransferExchangeOptions5} onchange={handleTransferExchangeChange5}> </lightning-combobox>
+                                  <template if:true={showDestination}>
+                                  <lightning-input label="Destination Contract Number" type="Number" value={Destinationnumber} onchange={handleDestinationnumberChange} ></lightning-input>
+                                  <lightning-input label="Destination Contract Date" type="date" value={Destinationdate} onchange={handleDestinationdateChange} ></lightning-input>   
+                                  </template> </lightning-accordion-section>
+                </lightning-accordion>
+            </div>
+        </template>
+          
+
+
+
+
+   
+            <template if:true={ShowHardship}>
+            <div class="slds-m-around_medium">
+                <lightning-accordion allow-multiple-section-opening>
+                    <lightning-accordion-section name="Hardship" label="Hardship">
+                        <!-- Add content for Hardship section here -->
+                        <lightning-input type="checkbox" label="Unreimbursed Medical Expense" checked={isMedicalChecked} onchange={handleMedicalChange}></lightning-input>
+                         <template if:true={isMedicalChecked}>
+                                 <lightning-input label="Unreimbursed Medical Amount" type="Number" value={MedicalAmount} onchange={handleMedicalAmountChange} ></lightning-input>  
+                        </template>     
+                        <lightning-input type="checkbox" label="Primary Residence Purchase" checked={isResidenceChecked} onchange={handleResidenceChange}></lightning-input>
+                        <template if:true={isResidenceChecked}>
+                                 <lightning-input label="Residence Purchase Amount" type="Number" value={ResidenceAmount} onchange={handleResidenceAmountChange} ></lightning-input>  
+                        </template> 
+                        <lightning-input type="checkbox" label="Education Expense" checked={isEducationChecked} onchange={handleEducationChange}></lightning-input>
+                        <template if:true={isEducationChecked}>
+                                 <lightning-input label="Education Amount" type="Number" value={EducationAmount} onchange={handleEducationAmountChange} ></lightning-input>  
+                        </template> 
+                        <lightning-input type="checkbox" label="Primary Residence Foreclosure/Eviction" checked={isForeclosureChecked} onchange={handleForeclosureChange}></lightning-input>
+                        <template if:true={isForeclosureChecked}>
+                                 <lightning-input label="Residence Foreclosure/Eviction Amount" type="Number" value={ForeclosureAmount} onchange={handleForeclosureAmountChange} ></lightning-input>  
+                        </template> 
+                        <lightning-input type="checkbox" label="Primary Residence Repair Expense" checked={isRepairChecked} onchange={handleRepairChange}></lightning-input>
+                        <template if:true={isRepairChecked}>
+                                 <lightning-input label="Residence Casualty Repair Amount" type="Number" value={RepairAmount} onchange={handleRepairAmountChange} ></lightning-input>  
+                        </template> 
+                        <lightning-input type="checkbox" label="Funeral Expense" checked={isFuneralChecked} onchange={handleFuneralChange}></lightning-input>
+                        <template if:true={isFuneralChecked}>
+                                 <lightning-input label="Funeral Amount" type="Number" value={FuneralAmount} onchange={handleFuneralAmountChange} ></lightning-input>  
+                        </template> 
+                         
+                          </lightning-accordion-section>
+                </lightning-accordion>
+            </div>
+        </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <lightning-button label="Save" onclick={handleSave}></lightning-button>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+    </lightning-card>
+</template>
