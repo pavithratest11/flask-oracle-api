@@ -1,0 +1,29 @@
+# Use an official Python image
+FROM python:3.9-slim
+
+# Install Oracle Instant Client dependencies
+RUN apt-get update && apt-get install -y \
+    libaio1 \
+    curl \
+    unzip
+
+# Download Oracle Instant Client (update the version as needed)
+RUN curl -L -o /tmp/instantclient.zip https://download.oracle.com/otn_software/linux/instantclient/221000/oracle-instantclient-basic-linux.x64-21.2.0.0.0.zip && \
+    unzip /tmp/instantclient.zip -d /opt && \
+    rm /tmp/instantclient.zip
+
+# Set environment variables for Oracle client
+ENV LD_LIBRARY_PATH=/opt/instantclient_21_2:$LD_LIBRARY_PATH
+ENV PATH=/opt/instantclient_21_2:$PATH
+
+# Install required Python packages
+COPY requirements.txt /app/
+RUN pip install -r /app/requirements.txt
+
+# Set working directory and copy your Flask API code
+WORKDIR /app
+COPY . /app
+
+# Expose port and start the application
+EXPOSE 5000
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
