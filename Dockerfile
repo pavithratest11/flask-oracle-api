@@ -15,4 +15,4 @@ RUN pip install -r /app/requirements.txt
 WORKDIR /app
 COPY . /app
 
-CMD "gunicorn", "app:app"
+CMD ["gunicorn", "app:app"]
