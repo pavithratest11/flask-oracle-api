@@ -22,7 +22,7 @@ def fetch_data_from_oracle():
         cursor = connection.cursor()
 
         # SQL query to fetch data (modify as per your need)
-        query = "SELECT planid,ssnum FROM acctbal WHERE rownum <= 10"
+        query = "SELECT planid, ssnum FROM acctbal WHERE rownum <= 10"
         
         # Execute the query
         cursor.execute(query)
@@ -47,6 +47,11 @@ def fetch_data_from_oracle():
     except cx_Oracle.Error as e:
         print("Oracle Error:", e)
         return []
+
+# Route for the root path "/"
+@app.route('/')
+def home():
+    return "Welcome to the Flask Oracle API!"
 
 # Define a route to expose the data as a REST API
 @app.route('/api/data', methods=['GET'])
