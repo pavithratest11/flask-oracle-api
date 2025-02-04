@@ -15,6 +15,10 @@ RUN mkdir -p /opt/oracle && \
     echo /opt/oracle/instantclient_19_12 > /etc/ld.so.conf.d/oracle-instantclient.conf && \
     ldconfig
 
+# Set ORACLE_HOME and LD_LIBRARY_PATH
+ENV ORACLE_HOME /opt/oracle/instantclient
+ENV LD_LIBRARY_PATH /opt/oracle/instantclient:$LD_LIBRARY_PATH
+
 # Install required Python packages
 COPY requirements.txt /app/
 RUN pip install -r /app/requirements.txt
@@ -22,5 +26,8 @@ RUN pip install -r /app/requirements.txt
 # Set working directory and copy your Flask API code
 WORKDIR /app
 COPY . /app
+
+# Verify Oracle Instant Client installation
+RUN python3 -c "import cx_Oracle; print(cx_Oracle.clientversion())"
 
 CMD ["gunicorn", "app:app"]
